@@ -1,0 +1,12 @@
+{% load static %}
+
+<div class="conveniences">
+    {% if home.has_wifi %}{% include 'homes/convenience.html' with name='wifi' tooltip='Есть Wi-Fi' %}{% endif %}
+    {% if home.has_minibar %}{% include 'homes/convenience.html' with name='minibar' tooltip='Есть минибар' %}{% endif %}
+    {% if home.has_parking %}{% include 'homes/convenience.html' with name='parking' tooltip='Есть парковка' %}{% endif %}
+    {% if home.has_hairdryer %}{% include 'homes/convenience.html' with name='hairdryer' tooltip='Есть фен' %}{% endif %}
+    {% if home.has_workspace %}{% include 'homes/convenience.html' with name='workspace' tooltip='Есть рабочая зона' %}{% endif %}
+    {% if home.has_safe %}{% include 'homes/convenience.html' with name='safe' tooltip='Есть сейф' %}{% endif %}
+    {% if home.has_washing_machine %}{% include 'homes/convenience.html' with name='washing_machine' tooltip='Есть стиральная машина' %}{% endif %}
+    {% if home.has_swimming_pool %}{% include 'homes/convenience.html' with name='swimming_pool' tooltip='Есть бассейн' %}{% endif %}
+</div>

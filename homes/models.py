@@ -1,6 +1,8 @@
 import uuid
 
 from django.db import models
+from ckeditor_uploader.fields import RichTextUploadingField
+
 
 from .validators import validate_16x9_jpeg
 
@@ -24,7 +26,7 @@ class Home(models.Model):
     show_on_site = models.BooleanField(default=False, verbose_name='Показывать на сайте')
 
     short_description = models.TextField(blank=True, default='', verbose_name='Краткое описание')
-    long_description = models.TextField(blank=True, default='', verbose_name='Полное описание')
+    long_description = RichTextUploadingField(blank=True, default='', verbose_name='Полное описание')
 
     ya_map = models.TextField(blank=True, default='', verbose_name='Код яндекс карт')
     video = models.TextField(blank=True, default='', verbose_name='Код на видео Youtube')
@@ -32,7 +34,7 @@ class Home(models.Model):
     has_wifi = models.BooleanField(default=False, verbose_name='Есть Wi-Fi')
     has_minibar = models.BooleanField(default=False, verbose_name='Есть минибар')
     has_parking = models.BooleanField(default=False, verbose_name='Есть парковка')
-    has_fan = models.BooleanField(default=False, verbose_name='Есть фен')
+    has_hairdryer = models.BooleanField(default=False, verbose_name='Есть фен')
     has_workspace = models.BooleanField(default=False, verbose_name='Есть рабочая зона')
     has_safe = models.BooleanField(default=False, verbose_name='Есть сейф')
     has_washing_machine = models.BooleanField(default=False, verbose_name='Есть стиральная машина')

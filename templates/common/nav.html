@@ -1,0 +1,5 @@
+<nav class="navbar">
+    {% for name, link in nav.items %}
+        <a class="navlink" href="{% url link %}" {% if link == current_link %}data-current{% endif %}>{{ name }}</a>
+    {% endfor %}
+</nav>

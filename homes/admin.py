@@ -42,7 +42,7 @@ class HomeAdmin(admin.ModelAdmin):
             {
                 'classes': ['collapse'],
                 'fields': (
-                    'has_wifi', 'has_minibar', 'has_parking', 'has_fan', 'has_workspace',
+                    'has_wifi', 'has_minibar', 'has_parking', 'has_hairdryer', 'has_workspace',
                     'has_safe', 'has_washing_machine', 'has_swimming_pool',
                 )
             }

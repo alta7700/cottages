@@ -1,0 +1,66 @@
+<script>
+    const homeIDs = [{% for home in homes %}{{ home.id }}, {% endfor %}];
+    function getLastHomeIndex() { return homeIDs.length - 1 }
+
+    const flipper = document.getElementById('active-home-flipper');
+    const main = document.querySelector('main');
+
+    function getActiveHomeEl() { return flipper.querySelector('.home-header[data-active]') }
+    function getActiveHomeDetailEl() { return main.querySelector('.home-details[data-active]') }
+    function getActiveHomeIndex() { return Number(getActiveHomeEl().dataset.position) }
+    function getHomeElByIndex(index) {
+        return flipper.querySelector(`.home-header[data-position="${index}"]`)
+    }
+    function getHomeDetailElByIndex(index) {
+        return main.querySelector(`.home-details[data-position="${index}"]`)
+    }
+
+    function getPrevHomeIndex() {
+        const currentIndex = getActiveHomeIndex();
+        return currentIndex === 0 ? getLastHomeIndex() : currentIndex - 1;
+    }
+
+    function getNextHomeIndex() {
+        const currentIndex = getActiveHomeIndex();
+        return currentIndex === getLastHomeIndex() ? 0 : currentIndex + 1;
+    }
+
+    function setActiveIndex(index, unset = true) {
+        if (unset) {
+            delete getActiveHomeEl().dataset.active;
+            delete getActiveHomeDetailEl().dataset.active;
+        }
+        getHomeElByIndex(index).dataset.active = '';
+        getHomeDetailElByIndex(index).dataset.active = '';
+
+        const leftFlipper = flipper.querySelector('.flipper[data-left]')
+        const rightFlipper = flipper.querySelector('.flipper[data-right]')
+        leftFlipper.classList.remove('hidden')
+        rightFlipper.classList.remove('hidden')
+        if (index === 0) {
+            flipper.querySelector('.flipper[data-left]').classList.add('hidden');
+        } else if (index === getLastHomeIndex()) {
+            flipper.querySelector('.flipper[data-right]').classList.add('hidden');
+        }
+    }
+
+    function showPrevHome() {
+        const rightFlipper = flipper.querySelector('.flipper[data-right]');
+        if (rightFlipper.classList.contains('hidden')) {
+            rightFlipper.classList.remove('hidden');
+        }
+        setActiveIndex(getPrevHomeIndex());
+    }
+    function showNextHome() {
+        const leftFlipper = flipper.querySelector('.flipper[data-left]')
+        if (leftFlipper.classList.contains('hidden')) {
+            leftFlipper.classList.remove('hidden');
+        }
+        setActiveIndex(getNextHomeIndex());
+    }
+
+    flipper.querySelector('.flipper[data-left]').addEventListener('click', showPrevHome);
+    flipper.querySelector('.flipper[data-right]').addEventListener('click', showNextHome);
+    setActiveIndex({{ initial_active_home }}, false);
+
+</script>
