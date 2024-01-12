@@ -67,9 +67,9 @@ header {
 }
 .convenience-tooltip {
     position: absolute;
-    top: -5px;
-    left: 0;
-    transform: translateY(-100%);
+    bottom: -5px;
+    left: 50%;
+    transform: translate(-50%, 100%);
     display: none;
     white-space: nowrap;
     color: var(--bgcolor);
@@ -94,7 +94,7 @@ header {
 .tabs {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 20px;
 }
 .tab-labels {
     display: flex;
@@ -111,12 +111,11 @@ header {
     border-right: 0.125rem solid color-mix(in srgb, var(--tabs-color) 80%, black);
     color: var(--bgcolor);
     cursor: pointer;
-    transition: all 0.25s;
+    transition: transform 0.25s;
     user-select: none;
 }
 .tab-label:hover {
-    top: -0.25rem;
-    transition: top 0.25s;
+    transform: translateY(-5%);
 }
 .tab-label[data-selected] {
     background: var(--bgcolor);
@@ -131,9 +130,26 @@ header {
 }
 .tab {
     display: none;
-    z-index: 1;
-    background: var(--bgcolor);
+    width: 100%;
 }
 .tab[data-selected] {
     display: block;
+}
+
+.carousel {
+    display: flex;
+    flex-direction: column;
+}
+.carousel-preview {
+    width: 100%;
+    aspect-ratio: 16/9;
+}
+.carousel-preview > img {
+    width: 100%;
+    object-fit: cover;
+}
+
+.carousel-scroller {
+}
+.carousel-image {
 }

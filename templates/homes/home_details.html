@@ -8,7 +8,7 @@
 {% block content %}
     <div id="home-covers">
         {% for home in homes %}
-            <div class="home-cover" data-position="{{ forloop.counter0 }}">
+            <div class="home-cover" data-position="{{ forloop.counter0 }}" {% if forloop.counter0 == initial_active_home %}data-active{% endif %}>
                 <img class="home-cover__image" src="{{ home.cover.url }}" alt/>
                 <div class="home-cover__form__container">
                     <span class="home-cover__form__name">{{ home.name }}</span>
@@ -22,17 +22,32 @@
     </div>
     <div id="home-details">
         {% for home in homes %}
-            <div class="home-detail" data-position="{{ forloop.counter0 }}">
+            <div class="home-detail" data-position="{{ forloop.counter0 }}" {% if forloop.counter0 == initial_active_home %}data-active{% endif %}>
                 <div class="tabs">
                     <div class="tab" data-label="Описание" data-name="description" data-selected>
-                        {% include 'common/conveniences.html' with home=home %}
-                        {{ home.long_description|safe }}
+                        <div class="home-detail__description">
+                            {% include 'common/conveniences.html' with home=home %}
+                            <div class="home-detail__description__text">
+                                {{ home.long_description|safe }}
+                            </div>
+                        </div>
                     </div>
                     <div class="tab" data-label="Фото" data-name="photo">
-
+                        <div class="carousel">
+                            {% for image in home.carousel.all %}
+                                <div
+                                        class="carousel-image"
+                                        data-img="{{ image.url }}"
+                                        data-position="{{ forloop.counter0 }}"
+                                        {% if forloop.first %}data-selected{% endif %}
+                                ></div>
+                            {% endfor %}
+                        </div>
                     </div>
                     <div class="tab" data-label="Видео" data-name="video">
-
+                        <div class="home-detail__video">
+                            <div class="home-detail__video__container">{{ home.video|safe }}</div>
+                        </div>
                     </div>
                     <div class="tab" data-label="Карта" data-name="map">
 
@@ -44,8 +59,27 @@
 
     <script>
         const homeIDs = [{% for home in homes %}{{ home.id }}, {% endfor %}];
-        const initialActiveHome = {{ initial_active_home }};
     </script>
     <script src="{% static "js/tabs.js" %}"></script>
+    <script src="{% static "js/carousel.js" %}"></script>
     <script src="{% static "js/home_details_flipper.js" %}"></script>
+    <script>
+        document.querySelectorAll('.tabs').forEach(tabs => {
+            const iframe = tabs.querySelector('.home-detail__video iframe')
+            tabs.onTabChange.push((_, pastTabName) => {
+                pastTabName === 'video' && iframe.contentWindow.postMessage(
+                    '{"event":"command","func":"pauseVideo","args":""}', '*'
+                )
+            })
+        })
+        covers.onHomeChange.push((_, pastIndex) => {
+            details.querySelector(`.home-detail[data-position="${pastIndex}"] .home-detail__video iframe`)
+                .contentWindow.postMessage(
+                    '{"event":"command","func":"pauseVideo","args":""}', '*'
+                )
+        })
+    </script>
+{#    <script>#}
+{#        setTimeout(() => document.getElementById('home-details').scrollIntoView({ behavior: 'smooth' }), 300)#}
+{#    </script>#}
 {% endblock %}

@@ -78,3 +78,7 @@ class HomeCarouselImage(models.Model):
         verbose_name_plural = 'Дополнительные фотографии дома (карусель)'
         unique_together = ('home', 'position')
         ordering = ('position',)
+
+    @property
+    def url(self) -> str:
+        return self.image.url

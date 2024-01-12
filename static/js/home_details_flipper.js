@@ -1,7 +1,8 @@
-function getLastHomeIndex() { return homeIDs.length - 1 }
-
 const covers = document.getElementById('home-covers');
+covers.onHomeChange = []
 const details = document.getElementById('home-details');
+
+function getLastHomeIndex() { return homeIDs.length - 1 }
 
 function getActiveHomeEl() { return covers.querySelector('.home-cover[data-active]') }
 function getActiveHomeDetailEl() { return details.querySelector('.home-detail[data-active]') }
@@ -27,11 +28,11 @@ function getChevron(pos) {
     return covers.querySelector(`.chevron-btn[data-${pos}]`)
 }
 
-function setActiveIndex(index, unset = true) {
-    if (unset) {
-        delete getActiveHomeEl().dataset.active;
-        delete getActiveHomeDetailEl().dataset.active;
-    }
+function setActiveIndex(index) {
+    const pastIndex = getActiveHomeIndex()
+    delete getActiveHomeEl().dataset.active;
+    delete getActiveHomeDetailEl().dataset.active;
+
     getHomeElByIndex(index).dataset.active = '';
     getHomeDetailElByIndex(index).dataset.active = '';
 
@@ -45,6 +46,7 @@ function setActiveIndex(index, unset = true) {
     if (index === getLastHomeIndex()) {
         rightChevron.classList.add('hidden');
     }
+    covers.onHomeChange.forEach(callback => callback(index, pastIndex))
 }
 
 function showPrevHome() {
@@ -58,4 +60,9 @@ function showNextHome() {
 
 getChevron('left').addEventListener('click', showPrevHome);
 getChevron('right').addEventListener('click', showNextHome);
-setActiveIndex(initialActiveHome, false);
+if (getActiveHomeIndex() === 0) {
+    getChevron('left').classList.add('hidden');
+}
+if (getActiveHomeIndex === getLastHomeIndex()) {
+    getChevron('right').classList.add('hidden');
+}

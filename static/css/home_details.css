@@ -82,3 +82,42 @@ header:has(+ main > #home-covers) {
 .home-detail[data-active] {
     display: block;
 }
+.home-detail .tab-labels {
+    justify-content: center;
+    flex-wrap: wrap;
+}
+.home-detail__description {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.home-detail__description__text {
+
+}
+.home-detail__photos {
+
+}
+.home-detail__video {
+    width: 100%;
+    max-width: 800px;
+    margin: auto;
+}
+.home-detail__video__container {
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+    overflow: hidden;
+}
+.home-detail__video iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-width: 0;
+    outline-width: 0;
+}
+
+.home-detail__maps {
+
+}

@@ -26,4 +26,5 @@ class HomesIndexView(TemplateView):
         context.update({
             'homes': list(HomeService.get_available_homes_details()),
         })
+        print(context['homes'][0].carousel)
         return context
