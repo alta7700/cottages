@@ -1,6 +1,8 @@
 from django.contrib import admin
 
 from .models import Home, HomeCarouselImage
+from . import parsers
+from .parsers import YaMapScriptParser, YTIframeParser
 
 
 class CarouselInline(admin.StackedInline):
@@ -56,3 +58,16 @@ class HomeAdmin(admin.ModelAdmin):
         if 'delete_selected' in actions:
             del actions['delete_selected']
         return actions
+
+    def get_form(self, request, obj=None, change=False, **kwargs):
+        form = super().get_form(request=request, obj=obj, change=change, **kwargs)
+        form.base_fields['ya_map'].validators.append(parsers.YaMapScriptParser.validate)
+        form.base_fields['video'].validators.append(parsers.YTIframeParser.validate)
+        return form
+
+    def save_form(self, request, form, change):
+        if 'ya_map' in form.changed_data:
+            form.instance.ya_map = YaMapScriptParser.transform(form.cleaned_data['ya_map'])
+        if 'video' in form.changed_data:
+            form.instance.video = YTIframeParser.transform(form.cleaned_data['video'])
+        return super().save_form(request=request, form=form, change=change)

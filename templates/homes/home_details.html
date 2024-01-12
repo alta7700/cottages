@@ -32,6 +32,7 @@
                             </div>
                         </div>
                     </div>
+                    {% if home.carousel.all %}
                     <div class="tab" data-label="Фото" data-name="photo">
                         <div class="carousel">
                             {% for image in home.carousel.all %}
@@ -44,14 +45,21 @@
                             {% endfor %}
                         </div>
                     </div>
+                    {% endif %}
+                    {% if home.video %}
                     <div class="tab" data-label="Видео" data-name="video">
                         <div class="home-detail__video">
                             <div class="home-detail__video__container">{{ home.video|safe }}</div>
                         </div>
                     </div>
-                    <div class="tab" data-label="Карта" data-name="map">
-
-                    </div>
+                    {% endif %}
+                    {% if home.ya_map %}
+                        <div class="tab" data-label="Карта" data-name="map">
+                            <div class="home-detail__map">
+                                <div class="home-detail__map__container">{{ home.ya_map|safe }}</div>
+                            </div>
+                        </div>
+                    {% endif %}
                 </div>
             </div>
         {% endfor %}
@@ -61,22 +69,21 @@
         const homeIDs = [{% for home in homes %}{{ home.id }}, {% endfor %}];
     </script>
     <script src="{% static "js/tabs.js" %}"></script>
-    <script src="{% static "js/carousel.js" %}"></script>
+{#    <script src="{% static "js/carousel.js" %}"></script>#}
     <script src="{% static "js/home_details_flipper.js" %}"></script>
     <script>
         document.querySelectorAll('.tabs').forEach(tabs => {
             const iframe = tabs.querySelector('.home-detail__video iframe')
-            tabs.onTabChange.push((_, pastTabName) => {
+            iframe && tabs.onTabChange.push((_, pastTabName) => {
                 pastTabName === 'video' && iframe.contentWindow.postMessage(
                     '{"event":"command","func":"pauseVideo","args":""}', '*'
                 )
             })
         })
         covers.onHomeChange.push((_, pastIndex) => {
-            details.querySelector(`.home-detail[data-position="${pastIndex}"] .home-detail__video iframe`)
-                .contentWindow.postMessage(
-                    '{"event":"command","func":"pauseVideo","args":""}', '*'
-                )
+            details.querySelector(
+                `.home-detail[data-position="${pastIndex}"] .home-detail__video iframe`
+            )?.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*')
         })
     </script>
 {#    <script>#}
