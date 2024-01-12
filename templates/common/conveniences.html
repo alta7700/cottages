@@ -1,0 +1,14 @@
+{% load static homes_extras %}
+
+<div class="conveniences">
+    {% for conv_name, conv_tooltip in home.get_conveniences.items %}
+        {% with "has_"|add:conv_name as attr_name %}
+            {% if home|getattr:attr_name %}
+                <span class="convenience">
+                    <span class="convenience-tooltip">{{ conv_tooltip }}</span>
+                    {% include "common/conv_svg/"|add:conv_name|add:".html" %}
+                </span>
+            {% endif %}
+        {% endwith %}
+    {% endfor %}
+</div>

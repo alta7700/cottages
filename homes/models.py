@@ -1,7 +1,7 @@
 import uuid
 
 from django.db import models
-from ckeditor_uploader.fields import RichTextUploadingField
+from ckeditor.fields import RichTextField
 
 
 from .validators import validate_16x9_jpeg
@@ -26,7 +26,7 @@ class Home(models.Model):
     show_on_site = models.BooleanField(default=False, verbose_name='Показывать на сайте')
 
     short_description = models.TextField(blank=True, default='', verbose_name='Краткое описание')
-    long_description = RichTextUploadingField(blank=True, default='', verbose_name='Полное описание')
+    long_description = RichTextField(blank=True, default='', verbose_name='Полное описание')
 
     ya_map = models.TextField(blank=True, default='', verbose_name='Код яндекс карт')
     video = models.TextField(blank=True, default='', verbose_name='Код на видео Youtube')
@@ -48,6 +48,15 @@ class Home(models.Model):
 
     def __str__(self):
         return self.name
+
+    @classmethod
+    def get_conveniences(cls) -> dict[str, str]:
+        if not hasattr(cls, '_conveniences_cached'):
+            setattr(cls, '_conveniences_cached', {
+                field.name[4:]: field.verbose_name
+                for field in cls._meta.local_fields if field.name.startswith('has_')
+            })
+        return getattr(cls, '_conveniences_cached')
 
 
 def carousel_image_path(instance: "HomeCarouselImage", *_):

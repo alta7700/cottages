@@ -1,0 +1,51 @@
+{% extends 'common/base.html' %}
+{% load static %}
+
+{% block extra_styles %}
+    <link href="{% static "css/home_details.css" %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+    <div id="home-covers">
+        {% for home in homes %}
+            <div class="home-cover" data-position="{{ forloop.counter0 }}">
+                <img class="home-cover__image" src="{{ home.cover.url }}" alt/>
+                <div class="home-cover__form__container">
+                    <span class="home-cover__form__name">{{ home.name }}</span>
+                    <form class="home-cover__form">
+                    </form>
+                </div>
+            </div>
+        {% endfor %}
+        {% include 'common/chevron.html' with dir='left' %}
+        {% include 'common/chevron.html' with dir='right' %}
+    </div>
+    <div id="home-details">
+        {% for home in homes %}
+            <div class="home-detail" data-position="{{ forloop.counter0 }}">
+                <div class="tabs">
+                    <div class="tab" data-label="Описание" data-name="description" data-selected>
+                        {% include 'common/conveniences.html' with home=home %}
+                        {{ home.long_description|safe }}
+                    </div>
+                    <div class="tab" data-label="Фото" data-name="photo">
+
+                    </div>
+                    <div class="tab" data-label="Видео" data-name="video">
+
+                    </div>
+                    <div class="tab" data-label="Карта" data-name="map">
+
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <script>
+        const homeIDs = [{% for home in homes %}{{ home.id }}, {% endfor %}];
+        const initialActiveHome = {{ initial_active_home }};
+    </script>
+    <script src="{% static "js/tabs.js" %}"></script>
+    <script src="{% static "js/home_details_flipper.js" %}"></script>
+{% endblock %}

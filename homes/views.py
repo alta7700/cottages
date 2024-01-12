@@ -11,7 +11,7 @@ nav = {
 
 
 class HomesIndexView(TemplateView):
-    template_name = 'homes/index.html'
+    template_name = 'homes/home_details.html'
 
     extra_context = {
         'title': 'Аренда котеджей в Краснодаре',
