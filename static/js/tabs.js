@@ -1,7 +1,6 @@
 document.querySelectorAll('.tabs').forEach(tabs => {
     const tabLabels = tabs.insertBefore(document.createElement('div'), tabs.firstChild)
     tabLabels.classList.add('tab-labels')
-
     function selectTab(e) {
         const newTabName = e.target.dataset.name
         const currentSelected = tabLabels.querySelector(`.tab-label[data-selected]`)

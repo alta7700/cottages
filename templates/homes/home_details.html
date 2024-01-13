@@ -1,6 +1,10 @@
 {% extends 'common/base.html' %}
+
 {% load static %}
 
+{% block lib_styles %}
+    <link href="https://cdn.jsdelivr.net/npm/swiper@11.0.5/swiper-bundle.min.css" rel="stylesheet">
+{% endblock %}
 {% block extra_styles %}
     <link href="{% static "css/home_details.css" %}" rel="stylesheet">
 {% endblock %}
@@ -34,15 +38,14 @@
                     </div>
                     {% if home.carousel.all %}
                     <div class="tab" data-label="Фото" data-name="photo">
-                        <div class="carousel">
-                            {% for image in home.carousel.all %}
-                                <div
-                                        class="carousel-image"
-                                        data-img="{{ image.url }}"
-                                        data-position="{{ forloop.counter0 }}"
-                                        {% if forloop.first %}data-selected{% endif %}
-                                ></div>
-                            {% endfor %}
+                        <div class="home-detail__photos">
+                            <swiper-container navigation="true" space-between="20" loop="true">
+                                {% for image in home.carousel.all %}
+                                    <swiper-slide lazy="true">
+                                        <img src="{{ image.url }}" alt loading="lazy">
+                                    </swiper-slide>
+                                {% endfor %}
+                            </swiper-container>
                         </div>
                     </div>
                     {% endif %}
@@ -67,7 +70,6 @@
         const homeIDs = [{% for home in homes %}{{ home.id }}, {% endfor %}];
     </script>
     <script src="{% static "js/tabs.js" %}"></script>
-{#    <script src="{% static "js/carousel.js" %}"></script>#}
     <script src="{% static "js/home_details_flipper.js" %}"></script>
     <script>
         document.querySelectorAll('.tabs').forEach(tabs => {
@@ -84,7 +86,5 @@
             )?.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*')
         })
     </script>
-{#    <script>#}
-{#        setTimeout(() => document.getElementById('home-details').scrollIntoView({ behavior: 'smooth' }), 300)#}
-{#    </script>#}
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/swiper@11.0.5/swiper-element-bundle.min.js"></script>
 {% endblock %}

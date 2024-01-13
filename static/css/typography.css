@@ -1,0 +1,90 @@
+body {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1em;
+    line-height: 1.5;
+}
+p {
+  margin: 0 0 1.5em;
+  max-width: 50rem;
+}
+h1, h2, h3, h4, h5, h6 {
+  font-weight: bolder;
+}
+h1 {
+  font-size: 1.625em;
+  line-height: 1.1;
+  margin: 3.23076923em 0 0.92307692em;
+}
+h2 {
+  font-size: 1.4375em;
+  line-height: 1.2;
+  margin: 3.13043478em 0 1.04347826em;
+}
+h3 {
+  font-size: 1.25em;
+  line-height: 1.3;
+  margin: 3em 0 1.2em;
+}
+h4 {
+  font-size: 1.125em;
+  line-height: 1.4;
+  margin: 2.66666667em 0 1.33333333em;
+}
+h5 {
+  font-size: 1em;
+  line-height: 1.5;
+  margin: 2.25em 0 1.5em;
+}
+h6 {
+  font-size: 0.75em;
+  line-height: 2;
+  margin: 2em 0 0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+@media (min-width: 768px) {
+  h1 {
+    font-size: 2.4375em;
+    margin-top: 3.07692308em;
+    margin-bottom: 0.61538462em;
+  }
+  h2 {
+    font-size: 1.9375em;
+    margin-top: 3.09677419em;
+    margin-bottom: 0.77419355em;
+  }
+  h3 {
+    font-size: 1.5625em;
+    margin-top: 2.88em;
+    margin-bottom: 0.96em;
+  }
+  h4 {
+    font-size: 1.25em;
+    margin-top: 2.4em;
+    margin-bottom: 1.2em;
+  }
+}
+h1:first-child,
+h2:first-child,
+h3:first-child,
+h4:first-child,
+h5:first-child,
+h6:first-child {
+  margin-top: 0;
+}
+/* double headers */
+h1 + h2 {
+  margin-top: 1.2em;
+}
+h2 + h3 {
+  margin-top: 1.3em;
+}
+h3 + h4 {
+  margin-top: 1.4em;
+}
+h4 + h5 {
+  margin-top: 1.5em;
+}
+h5 + h6 {
+  margin-top: 2em;
+}

@@ -7,9 +7,10 @@
     --convenience-color: var(--primary-color);
     --link-color: black;
     --tabs-color: var(--primary-color);
+
+    --swiper-navigation-color: var(--bgcolor);
 }
 body {
-    font-family: 'Montserrat', sans-serif;
     width: 100%;
     margin-inline: auto;
     background: var(--bgcolor);
@@ -90,38 +91,45 @@ header {
     stroke: var(--convenience-color);
 }
 
-
 .tabs {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    align-items: center;
+    width: 100%;
 }
 .tab-labels {
     display: flex;
     flex-direction: row;
-    flex-wrap: wrap;
-    float: left;
+    flex-wrap: nowrap;
+    gap: 3px;
+    background: var(--tabs-color);
+    padding: 4px;
+    margin-block-end: 20px;
+    border-radius: 50px;
 }
 .tab-label {
     display: block;
-    line-height: 2.75em;
-    height: 3em;
-    padding: 0 1.618em;
+    line-height: 2.3em;
+    height: 2.5em;
+    padding: 0 1em;
     background: var(--tabs-color);
-    border-right: 0.125rem solid color-mix(in srgb, var(--tabs-color) 80%, black);
     color: var(--bgcolor);
     cursor: pointer;
-    transition: transform 0.25s;
     user-select: none;
+    border-radius: 50px;
+    transition: color, background, transform;
+    transition-duration: 0.25s;
 }
-.tab-label:hover {
-    transform: translateY(-5%);
+.tab-label:focus-visible {
+    outline: color-mix(in srgb, var(--tabs-color), black) solid 2px;
+}
+.tab-label:hover:not([data-selected]),
+.tab-label:focus-visible {
+    transform: translateY(-3%);
 }
 .tab-label[data-selected] {
     background: var(--bgcolor);
-    color: #2c3e50;
-    border-right: 0.125rem solid var(--bgcolor);
-    transition: all 0.35s;
+    color: var(--primary-color);
     z-index: 1;
     top: -0.0625rem;
 }
@@ -131,25 +139,18 @@ header {
 .tab {
     display: none;
     width: 100%;
+    animation: content 0.15s ease-in;
 }
 .tab[data-selected] {
     display: block;
 }
-
-.carousel {
-    display: flex;
-    flex-direction: column;
-}
-.carousel-preview {
-    width: 100%;
-    aspect-ratio: 16/9;
-}
-.carousel-preview > img {
-    width: 100%;
-    object-fit: cover;
-}
-
-.carousel-scroller {
-}
-.carousel-image {
+@keyframes content {
+    from {
+        opacity: 0;
+        transform: translateY(5%);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0%);
+    }
 }
