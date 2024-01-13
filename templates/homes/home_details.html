@@ -55,9 +55,7 @@
                     {% endif %}
                     {% if home.ya_map %}
                         <div class="tab" data-label="Карта" data-name="map">
-                            <div class="home-detail__map">
-                                <div class="home-detail__map__container">{{ home.ya_map|safe }}</div>
-                            </div>
+                            <div class="home-detail__map">{{ home.ya_map|safe }}</div>
                         </div>
                     {% endif %}
                 </div>
