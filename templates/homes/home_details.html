@@ -4,6 +4,7 @@
 
 {% block lib_styles %}
     <link href="https://cdn.jsdelivr.net/npm/swiper@11.0.5/swiper-bundle.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/air-datepicker@3.4.0/air-datepicker.min.css" rel="stylesheet">
 {% endblock %}
 {% block extra_styles %}
     <link href="{% static "css/home_details.css" %}" rel="stylesheet">
@@ -16,7 +17,14 @@
                 <img class="home-cover__image" src="{{ home.cover.url }}" alt/>
                 <div class="home-cover__form__container">
                     <span class="home-cover__form__name">{{ home.name }}</span>
-                    <form class="home-cover__form">
+                    <form class="home-cover__form" novalidate>
+                        {% csrf_token %}
+                        {{ ticket_form.dtrange }}
+                        {{ ticket_form.name }}
+                        {{ ticket_form.phone_number }}
+                        {{ ticket_form.guest_count }}
+                        {{ ticket_form.home.as_hidden }}
+                        <button type="submit">Забронировать</button>
                     </form>
                 </div>
             </div>
@@ -66,25 +74,21 @@
         {% endfor %}
     </div>
 
+    <script type="text/javascript" src="{% static "js/tabs.js" %}"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/swiper@11.0.5/swiper-element-bundle.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/air-datepicker@3.4.0/air-datepicker.min.js"></script>
     <script>
         const homeIDs = [{% for home in homes %}{{ home.id }}, {% endfor %}];
     </script>
-    <script src="{% static "js/tabs.js" %}"></script>
-    <script src="{% static "js/home_details_flipper.js" %}"></script>
+    <script src="{% static "js/home_details.js" %}"></script>
     <script>
-        document.querySelectorAll('.tabs').forEach(tabs => {
-            const iframe = tabs.querySelector('.home-detail__video iframe')
-            iframe && tabs.onTabChange.push((_, pastTabName) => {
-                pastTabName === 'video' && iframe.contentWindow.postMessage(
-                    '{"event":"command","func":"pauseVideo","args":""}', '*'
-                )
+        document.querySelectorAll('input[name="dtrange"]').forEach(input =>
+            new AirDatepicker(input, {
+                range: true,
+                minDate: new Date(),
+                dateFormat: "dd.MM.yyyy",
+                multipleDatesSeparator: " - ",
             })
-        })
-        covers.onHomeChange.push((_, pastIndex) => {
-            details.querySelector(
-                `.home-detail[data-position="${pastIndex}"] .home-detail__video iframe`
-            )?.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*')
-        })
+        )
     </script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/swiper@11.0.5/swiper-element-bundle.min.js"></script>
 {% endblock %}

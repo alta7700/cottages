@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Home, HomeCarouselImage
+from .models import Home, HomeCarouselImage, Ticket
 from . import parsers
 from .parsers import YaMapScriptParser, YTIframeParser
 
@@ -71,3 +71,22 @@ class HomeAdmin(admin.ModelAdmin):
         if 'video' in form.changed_data:
             form.instance.video = YTIframeParser.transform(form.cleaned_data['video'])
         return super().save_form(request=request, form=form, change=change)
+
+
+@admin.register(Ticket)
+class TicketAdmin(admin.ModelAdmin):
+    list_display = ('home', 'name', 'guest_count', 'start_date', 'status')
+    fields = (
+        'home', 'name', 'start_date', 'end_date', 'phone_number',
+        'guest_count', 'created_at', 'status', 'comment'
+    )
+    readonly_fields = ('created_at',)
+    list_filter = ('home', 'status')
+    ordering = ('status', '-created_at')
+    show_facets = admin.ShowFacets.ALWAYS
+
+    def get_actions(self, request):
+        actions = super().get_actions(request)
+        if 'delete_selected' in actions:
+            del actions['delete_selected']
+        return actions

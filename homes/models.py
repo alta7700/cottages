@@ -1,6 +1,8 @@
 import uuid
 
 from django.db import models
+from django.conf import settings
+from phonenumber_field.modelfields import PhoneNumberField
 from ckeditor.fields import RichTextField
 
 
@@ -82,3 +84,26 @@ class HomeCarouselImage(models.Model):
     @property
     def url(self) -> str:
         return self.image.url
+
+
+class Ticket(models.Model):
+    class Status(models.IntegerChoices):
+        NEW = 1, 'Новая'
+        PENDING = 2, 'В обработке'
+        CLOSED = 3, 'Закрыта'
+
+    id = models.AutoField(primary_key=True, editable=False)
+    home = models.ForeignKey(Home, on_delete=models.CASCADE, related_name='tickets', verbose_name='Дом')
+    name = models.CharField(max_length=30, default='', blank=True, verbose_name='Имя')
+    start_date = models.DateField(verbose_name='Начало брони')
+    end_date = models.DateField(verbose_name='Конец брони')
+    phone_number = PhoneNumberField(region=settings.PHONENUMBER_DEFAULT_REGION, verbose_name='Телефон')
+    guest_count = models.PositiveSmallIntegerField(verbose_name='Количество гостей')
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Отправлено клиентом')
+    status = models.PositiveSmallIntegerField(choices=Status, default=Status.NEW, verbose_name='Статус')
+    comment = models.TextField(default='', blank=True, verbose_name='Комментарий')
+
+    class Meta:
+        db_table = 'tickets'
+        verbose_name = 'Заявка'
+        verbose_name_plural = 'Заявки'

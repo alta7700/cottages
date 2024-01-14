@@ -48,15 +48,44 @@ header:has(+ main > #home-covers) {
     position: absolute;
     top: 15%;
     left: 8%;
+    max-width: 35%;
     padding: 20px;
     border-radius: 30px;
     background: color-mix(in srgb, var(--bgcolor) 70%, transparent);
+    transition: 0.25s;
+}
+.home-cover__form__container[data-completed] {
+    background: rgba(35, 243, 35, 0.7);
 }
 .home-cover__form__name {
     font-family: 'Salsa', cursive;
     font-size: max(16px, min(3vw, 30px));
+    margin-bottom: 10px;
 }
-
+.home-cover__form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.home-cover__form button[type="submit"] {
+    background: var(--primary-color);
+    color: var(--bgcolor);
+    padding-block: 10px;
+    padding-inline: 5px;
+    border-radius: 30px;
+    margin-block-start: 10px;
+    height: 40px;
+    transition: 0.25s;
+}
+.home-cover__form button[type="submit"]:hover:not([disabled]) {
+    transform: translateY(-3%);
+}
+.home-cover__form button[type="submit"][disabled] {
+    background: #b7b7b7;
+}
+.home-cover__form input {
+    border-radius: 30px;
+}
 
 .home-cover[data-active] {
     display: block;
@@ -126,5 +155,3 @@ header:has(+ main > #home-covers) {
     max-width: 800px;
     margin-inline: auto;
 }
-
-

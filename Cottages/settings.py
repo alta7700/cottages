@@ -27,7 +27,6 @@ INSTALLED_APPS = [
     'ckeditor',
 
     'homes.apps.HomesConfig',
-    'tickets.apps.TicketsConfig',
 ]
 
 MIDDLEWARE = [
@@ -106,3 +105,6 @@ MEDIA_ROOT = BASE_DIR / 'media'
 MEDIA_URL = '/media/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+
+PHONENUMBER_DEFAULT_REGION = 'RU'
+PHONENUMBER_DEFAULT_FORMAT = 'E164'
