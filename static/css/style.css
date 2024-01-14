@@ -1,11 +1,13 @@
 :root {
     --bgcolor: #f8f8f8;
-    --primary-color: #68c1da;
+    --primary-color: #68aeda;
     --flipper-size: 20px;
     --flipper-thickness: 3px;
     --flipper-color: var(--bgcolor);
     --convenience-color: var(--primary-color);
     --link-color: black;
+    --error-color: red;
+
     --tabs-color: var(--primary-color);
 
     --swiper-navigation-color: var(--bgcolor);
@@ -154,11 +156,11 @@ header {
 @keyframes content {
     from {
         opacity: 0;
-        transform: translateY(5%);
+        transform: translateY(20px);
     }
     to {
         opacity: 1;
-        transform: translateY(0%);
+        transform: translateY(0);
     }
 }
 
@@ -179,6 +181,25 @@ input {
 input:focus {
     border-color: var(--primary-color);
 }
-input[data-error] {
-    border-color: red
+input[data-has-error] {
+    border-color: var(--error-color);
+}
+
+.primary-button {
+    background: var(--primary-color);
+    color: var(--bgcolor);
+    padding: 10px;
+    border-radius: 30px;
+    height: 40px;
+    transition: 0.25s;
+    text-align: center;
+    line-height: 1.2;
+    white-space: nowrap;
+    width: min-content;
+}
+.primary-button:hover:not([disabled]) {
+    transform: translateY(-3%);
+}
+.primary-button[disabled] {
+    background: #b7b7b7;
 }

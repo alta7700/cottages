@@ -1,17 +1,30 @@
 
 (function() {
     const covers = document.getElementById('home-covers');
+    const homeIDs = [...covers.querySelectorAll('.home-cover')].map(el => Number(el.dataset.homeId));
     covers.onHomeChange = []
     const details = document.getElementById('home-details');
 
-    function getLastHomeIndex() { return homeIDs.length - 1 }
+    function getLastHomeIndex() {
+        return homeIDs.length - 1
+    }
 
-    function getActiveHomeEl() { return covers.querySelector('.home-cover[data-active]') }
-    function getActiveHomeDetailEl() { return details.querySelector('.home-detail[data-active]') }
-    function getActiveHomeIndex() { return Number(getActiveHomeEl().dataset.position) }
+    function getActiveHomeEl() {
+        return covers.querySelector('.home-cover[data-active]')
+    }
+
+    function getActiveHomeDetailEl() {
+        return details.querySelector('.home-detail[data-active]')
+    }
+
+    function getActiveHomeIndex() {
+        return Number(getActiveHomeEl().dataset.position)
+    }
+
     function getHomeElByIndex(index) {
         return covers.querySelector(`.home-cover[data-position="${index}"]`)
     }
+
     function getHomeDetailElByIndex(index) {
         return details.querySelector(`.home-detail[data-position="${index}"]`)
     }
@@ -55,10 +68,20 @@
         getChevron('right').classList.remove('hidden');
         setActiveIndex(getPrevHomeIndex());
     }
+
     function showNextHome() {
         getChevron('left').classList.remove('hidden');
         setActiveIndex(getNextHomeIndex());
     }
+
+    if (initialHomeId !== undefined) {
+        document.querySelector(`.home-cover[data-home-id="${initialHomeId}"]`).dataset.active = '';
+        document.querySelector(`.home-detail[data-home-id="${initialHomeId}"]`).dataset.active = '';
+    } else {
+        document.querySelector('.home-cover[data-position="0"]').dataset.active = '';
+        document.querySelector('.home-detail[data-position="0"]').dataset.active = '';
+    }
+
 
     getChevron('left').addEventListener('click', showPrevHome);
     getChevron('right').addEventListener('click', showNextHome);
@@ -88,8 +111,8 @@
         form.querySelector('input[name="home"]').value = homeIDs[Number(cover.dataset.position)]
         form.querySelectorAll('input:not([type="hidden"])').forEach(el => {
             el.addEventListener('focus', () => {
-                if (el.dataset.error !== undefined) {
-                    delete el.dataset.error
+                if (el.dataset.hasError !== undefined) {
+                    delete el.dataset.hasError
                 }
             })
         })
@@ -113,7 +136,7 @@
                 .then(data => {
                     if (data?.errors) {
                         data.errors.forEach(fieldName => {
-                            form.querySelector(`input[name="${fieldName}"]`).dataset.error = ''
+                            form.querySelector(`input[name="${fieldName}"]`).dataset.hasError = ''
                         })
                         form.querySelectorAll('button[type="submit"], input').forEach(el => {
                             el.disabled = false
@@ -122,4 +145,13 @@
                 })
         })
     })
+
+    if (new URLSearchParams(window.location.search).get('scroll') === "1") {
+        setTimeout(() =>
+            document.querySelector('#home-details').scrollIntoView({behavior: "smooth"}),
+            300
+        )
+    }
+
+
 })()

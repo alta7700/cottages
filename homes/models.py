@@ -85,6 +85,14 @@ class HomeCarouselImage(models.Model):
     def url(self) -> str:
         return self.image.url
 
+    @property
+    def width(self) -> int:
+        return self.image.width
+
+    @property
+    def height(self) -> int:
+        return self.image.height
+
 
 class Ticket(models.Model):
     class Status(models.IntegerChoices):

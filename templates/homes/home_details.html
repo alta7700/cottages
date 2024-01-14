@@ -1,94 +1,11 @@
-{% extends 'common/base.html' %}
+{% extends 'homes/base_home_details.html' %}
 
-{% load static %}
-
-{% block lib_styles %}
-    <link href="https://cdn.jsdelivr.net/npm/swiper@11.0.5/swiper-bundle.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/air-datepicker@3.4.0/air-datepicker.min.css" rel="stylesheet">
-{% endblock %}
-{% block extra_styles %}
-    <link href="{% static "css/home_details.css" %}" rel="stylesheet">
+{% block seo %}
+    {{ block.super }}
+    <meta name="description" content="{{ initial_home.short_description }}">  
 {% endblock %}
 
-{% block content %}
-    <div id="home-covers">
-        {% for home in homes %}
-            <div class="home-cover" data-position="{{ forloop.counter0 }}" {% if forloop.counter0 == initial_active_home %}data-active{% endif %}>
-                <img class="home-cover__image" src="{{ home.cover.url }}" alt/>
-                <div class="home-cover__form__container">
-                    <span class="home-cover__form__name">{{ home.name }}</span>
-                    <form class="home-cover__form" novalidate>
-                        {% csrf_token %}
-                        {{ ticket_form.dtrange }}
-                        {{ ticket_form.name }}
-                        {{ ticket_form.phone_number }}
-                        {{ ticket_form.guest_count }}
-                        {{ ticket_form.home.as_hidden }}
-                        <button type="submit">Забронировать</button>
-                    </form>
-                </div>
-            </div>
-        {% endfor %}
-        {% include 'common/chevron.html' with dir='left' %}
-        {% include 'common/chevron.html' with dir='right' %}
-    </div>
-    <div id="home-details">
-        {% for home in homes %}
-            <div class="home-detail" data-position="{{ forloop.counter0 }}" {% if forloop.counter0 == initial_active_home %}data-active{% endif %}>
-                <div class="tabs">
-                    <div class="tab" data-label="Описание" data-name="description" data-selected>
-                        <div class="home-detail__description">
-                            {% include 'common/conveniences.html' with home=home %}
-                            <div class="home-detail__description__text">
-                                {{ home.long_description|safe }}
-                            </div>
-                        </div>
-                    </div>
-                    {% if home.carousel.all %}
-                    <div class="tab" data-label="Фото" data-name="photo">
-                        <div class="home-detail__photos">
-                            <swiper-container navigation="true" space-between="20" loop="true">
-                                {% for image in home.carousel.all %}
-                                    <swiper-slide lazy="true">
-                                        <img src="{{ image.url }}" alt loading="lazy">
-                                    </swiper-slide>
-                                {% endfor %}
-                            </swiper-container>
-                        </div>
-                    </div>
-                    {% endif %}
-                    {% if home.video %}
-                    <div class="tab" data-label="Видео" data-name="video">
-                        <div class="home-detail__video">
-                            <div class="home-detail__video__container">{{ home.video|safe }}</div>
-                        </div>
-                    </div>
-                    {% endif %}
-                    {% if home.ya_map %}
-                        <div class="tab" data-label="Карта" data-name="map">
-                            <div class="home-detail__map">{{ home.ya_map|safe }}</div>
-                        </div>
-                    {% endif %}
-                </div>
-            </div>
-        {% endfor %}
-    </div>
-
-    <script type="text/javascript" src="{% static "js/tabs.js" %}"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/swiper@11.0.5/swiper-element-bundle.min.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/air-datepicker@3.4.0/air-datepicker.min.js"></script>
-    <script>
-        const homeIDs = [{% for home in homes %}{{ home.id }}, {% endfor %}];
-    </script>
-    <script src="{% static "js/home_details.js" %}"></script>
-    <script>
-        document.querySelectorAll('input[name="dtrange"]').forEach(input =>
-            new AirDatepicker(input, {
-                range: true,
-                minDate: new Date(),
-                dateFormat: "dd.MM.yyyy",
-                multipleDatesSeparator: " - ",
-            })
-        )
-    </script>
+{% block extra_scripts %}
+    <script>const initialHomeId = {{ initial_home.id }};</script>
+    {{ block.super }}
 {% endblock %}

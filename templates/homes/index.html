@@ -1,0 +1,11 @@
+{% extends 'homes/base_home_details.html' %}
+
+{% block seo %}
+    {{ block.super }}
+    <meta name="description" content="Посуточная аренда коттеджей в Краснодаре. Уютные коттеджи по всему Краснодару. ">
+{% endblock %}
+
+{% block extra_scripts %}
+    <script>const initialHomeId = undefined</script>
+    {{ block.super }}
+{% endblock %}

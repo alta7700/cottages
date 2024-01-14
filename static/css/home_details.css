@@ -67,21 +67,9 @@ header:has(+ main > #home-covers) {
     flex-direction: column;
     gap: 10px;
 }
-.home-cover__form button[type="submit"] {
-    background: var(--primary-color);
-    color: var(--bgcolor);
-    padding-block: 10px;
-    padding-inline: 5px;
-    border-radius: 30px;
+.home-cover__form .primary-button {
     margin-block-start: 10px;
-    height: 40px;
-    transition: 0.25s;
-}
-.home-cover__form button[type="submit"]:hover:not([disabled]) {
-    transform: translateY(-3%);
-}
-.home-cover__form button[type="submit"][disabled] {
-    background: #b7b7b7;
+    width: 100%;
 }
 .home-cover__form input {
     border-radius: 30px;
@@ -102,6 +90,7 @@ header:has(+ main > #home-covers) {
 
 #home-details {
     margin-block-start: 20px;
+    scroll-margin-block-start: 20px;
     margin-inline: 20px;
     min-height: calc(100dvh - 20px);
 }
