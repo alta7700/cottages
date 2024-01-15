@@ -43,6 +43,7 @@ class HomeDetailsView(BaseHomeDetailsView):
         for home in context['homes']:
             if home.slug == slug:
                 context['initial_home'] = home
+                context['title'] = home.name
         return context
 
     def get(self, request, *args, **kwargs):
