@@ -5,29 +5,17 @@
     covers.onHomeChange = []
     const details = document.getElementById('home-details');
 
-    function getLastHomeIndex() {
-        return homeIDs.length - 1
-    }
+    function getLastHomeIndex() { return homeIDs.length - 1 }
 
-    function getActiveHomeEl() {
-        return covers.querySelector('.home-cover[data-active]')
-    }
+    function getActiveHomeEl() { return covers.querySelector('.home-cover[data-active]') }
 
-    function getActiveHomeDetailEl() {
-        return details.querySelector('.home-detail[data-active]')
-    }
+    function getActiveHomeDetailEl() { return details.querySelector('.home-detail[data-active]') }
 
-    function getActiveHomeIndex() {
-        return Number(getActiveHomeEl().dataset.position)
-    }
+    function getActiveHomeIndex() { return Number(getActiveHomeEl().dataset.position) }
 
-    function getHomeElByIndex(index) {
-        return covers.querySelector(`.home-cover[data-position="${index}"]`)
-    }
+    function getHomeElByIndex(index) { return covers.querySelector(`.home-cover[data-position="${index}"]`) }
 
-    function getHomeDetailElByIndex(index) {
-        return details.querySelector(`.home-detail[data-position="${index}"]`)
-    }
+    function getHomeDetailElByIndex(index) { return details.querySelector(`.home-detail[data-position="${index}"]`) }
 
     function getPrevHomeIndex() {
         const currentIndex = getActiveHomeIndex();
@@ -74,6 +62,7 @@
         setActiveIndex(getNextHomeIndex());
     }
 
+    // активируем первый или установленный из шаблона активный дом
     if (initialHomeId !== undefined) {
         document.querySelector(`.home-cover[data-home-id="${initialHomeId}"]`).dataset.active = '';
         document.querySelector(`.home-detail[data-home-id="${initialHomeId}"]`).dataset.active = '';
@@ -82,7 +71,7 @@
         document.querySelector('.home-detail[data-position="0"]').dataset.active = '';
     }
 
-
+    // Скрываем левый или правый шевроны если уперлись с самого начала
     getChevron('left').addEventListener('click', showPrevHome);
     getChevron('right').addEventListener('click', showNextHome);
     if (getActiveHomeIndex() === 0) {
@@ -92,10 +81,11 @@
         getChevron('right').classList.add('hidden');
     }
 
+    // добавляем к видео хэндлер перехода на другую вкладку или дом. Необходимо останавливать видео
     document.querySelectorAll('.tabs').forEach(tabs => {
-        const iframe = tabs.querySelector('.home-detail__video iframe')
-        iframe && tabs.onTabChange.push((_, pastTabName) => {
-            pastTabName === 'video' && iframe.contentWindow.postMessage(
+        const youtubeVideo = tabs.querySelector('.home-detail__video iframe')
+        youtubeVideo && tabs.onTabChange.push((_, pastTabName) => {
+            pastTabName === 'video' && youtubeVideo.contentWindow.postMessage(
                 '{"event":"command","func":"pauseVideo","args":""}', '*'
             )
         })
@@ -106,46 +96,7 @@
         )?.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*')
     })
 
-    covers.querySelectorAll('.home-cover').forEach(cover => {
-        const form = cover.querySelector('.home-cover__form')
-        form.querySelector('input[name="home"]').value = homeIDs[Number(cover.dataset.position)]
-        form.querySelectorAll('input:not([type="hidden"])').forEach(el => {
-            el.addEventListener('focus', () => {
-                if (el.dataset.hasError !== undefined) {
-                    delete el.dataset.hasError
-                }
-            })
-        })
-        form.addEventListener('submit', (e) => {
-            e.preventDefault()
-            const formData = new FormData(e.target)
-            form.querySelectorAll('button[type="submit"], input').forEach(el => {
-                el.disabled = true
-            })
-            fetch('/ticket', {method: "post", body: formData})
-                .then(res => {
-                    if (res.status === 200) {
-                        const parent = form.parentElement
-                        parent.removeChild(form)
-                        parent.dataset.completed = ''
-                        const text = parent.appendChild(document.createElement('p'))
-                        text.innerHTML = 'Заявка успешно отправлена.<br>Менеджер свяжется с вами для уточнения деталей.'
-                    }
-                    if (res.status === 400) return res.json()
-                })
-                .then(data => {
-                    if (data?.errors) {
-                        data.errors.forEach(fieldName => {
-                            form.querySelector(`input[name="${fieldName}"]`).dataset.hasError = ''
-                        })
-                        form.querySelectorAll('button[type="submit"], input').forEach(el => {
-                            el.disabled = false
-                        })
-                    }
-                })
-        })
-    })
-
+    // скролим до табов если при переходе из списка "Все дома" не была нажата кнопка забронировать
     if (new URLSearchParams(window.location.search).get('scroll') === "1") {
         setTimeout(() =>
             document.querySelector('#home-details').scrollIntoView({behavior: "smooth"}),
@@ -154,4 +105,70 @@
     }
 
 
-})()
+    const formDialog = document.querySelector('#book-home');
+    const form = formDialog.querySelector('form');
+
+    // добавляем календарь на dtrange
+    new AirDatepicker(form.querySelector('input[name="dtrange"]'), {
+        range: true,
+        minDate: new Date(),
+        dateFormat: "dd.MM.yyyy",
+        multipleDatesSeparator: " - ",
+    })
+
+    // добавляем на все кнопки "Забронировать" на обложке открытие формы с подстановкой имя и homeId в форму
+    covers.querySelectorAll('.home-cover').forEach(cover => {
+        cover.querySelector('.primary-button').addEventListener('click', (e) => {
+            formDialog.showPopover();
+            form.reset();
+            form.querySelector('input[name="home"]').value = cover.dataset.homeId;
+            formDialog.querySelector('.book-home-form-name').textContent =
+                e.currentTarget.parentElement.querySelector('.home-cover__info__name').textContent;
+        })
+    })
+    // убираем ошибку с поля при начале ввода в него
+    form.querySelectorAll('input:not([type="hidden"])').forEach(el => {
+        el.addEventListener('focus', () => {
+            if (el.dataset.hasError !== undefined) {
+                delete el.dataset.hasError
+            }
+        })
+    })
+    // Отправляем запрос на сервер вместо обычного поведения браузера на отправку формы
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        form.querySelectorAll('button[type="submit"], input').forEach(el => {
+            el.disabled = true;
+        });
+        fetch('/ticket', {method: "post", body: formData})
+            .then(res => {
+                if (res.status === 200) {
+                    const parent = form.parentElement;
+                    parent.removeChild(form);
+                    parent.dataset.completed = '';
+                    const text = parent.appendChild(document.createElement('p'));
+                    text.innerHTML = 'Заявка успешно отправлена.<br>Менеджер свяжется с вами для уточнения деталей.';
+                    formDialog.close();
+                    console.info('notify success');
+                }
+                if (res.status === 400) return res.json()
+            })
+            .then(data => {
+                if (data?.errors) {
+                    data.errors.forEach(fieldName => {
+                        form.querySelector(`input[name="${fieldName}"]`).dataset.hasError = '';
+                    })
+                }
+            })
+            .catch(() => {
+                formDialog.close();
+                console.error('notify error');
+            })
+            .finally(() => {
+                form.querySelectorAll('button[type="submit"], input').forEach(el => {
+                    el.disabled = false;
+                });
+            });
+    });
+})();

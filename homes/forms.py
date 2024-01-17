@@ -15,8 +15,8 @@ class TicketForm(forms.ModelForm):
         model = Ticket
         fields = ('name', 'phone_number', 'guest_count', 'home')
         widgets = {
-            'name': forms.TextInput(attrs={'placeholder': 'Ваше имя'}),
-            'phone_number': forms.TextInput(attrs={'placeholder': 'Номер телефона'}),
+            'name': forms.TextInput(attrs={'placeholder': 'Ваше имя', 'autocomplete': 'given-name'}),
+            'phone_number': forms.TextInput(attrs={'placeholder': 'Номер телефона', 'autocomplete': 'phone'}),
             'guest_count': forms.NumberInput(attrs={'placeholder': 'Количество гостей'}),
         }
 

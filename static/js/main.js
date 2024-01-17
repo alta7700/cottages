@@ -1,3 +1,8 @@
+(function() {
+
+})()
+
+// TABS ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 document.querySelectorAll('.tabs').forEach(tabs => {
     const tabLabels = tabs.insertBefore(document.createElement('div'), tabs.firstChild)
     tabLabels.classList.add('tab-labels')

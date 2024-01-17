@@ -41,38 +41,31 @@ header:has(+ main > #home-covers) {
     object-fit: cover;
     user-select: none;
 }
-.home-cover__form__container {
+.home-cover__info {
     display: flex;
     flex-direction: column;
     align-items: center;
     position: absolute;
-    top: 15%;
+    top: 50%;
     left: 8%;
+    transform: translateY(-50%);
     max-width: 35%;
     padding: 20px;
     border-radius: 30px;
     background: color-mix(in srgb, var(--bgcolor) 70%, transparent);
     transition: 0.25s;
 }
-.home-cover__form__container[data-completed] {
-    background: rgba(35, 243, 35, 0.7);
-}
-.home-cover__form__name {
+.home-cover__info__name {
     font-family: 'Salsa', cursive;
-    font-size: max(16px, min(3vw, 30px));
+    font-size: 30px;
     margin-bottom: 10px;
 }
-.home-cover__form {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+.home-cover__info__cost {
+    font-size: 12px;
 }
-.home-cover__form .primary-button {
-    margin-block-start: 10px;
-    width: 100%;
-}
-.home-cover__form input {
-    border-radius: 30px;
+.home-cover__info__cost > span {
+    font-size: 20px;
+    font-weight: 600;
 }
 
 .home-cover[data-active] {
@@ -143,4 +136,27 @@ header:has(+ main > #home-covers) {
     height: 400px;
     max-width: 800px;
     margin-inline: auto;
+}
+
+#book-home {
+    padding: 20px;
+    border-radius: 15px;
+    background: var(--bgcolor);
+    display: flex;
+
+}
+#book-home::backdrop {
+    background: rgba(84, 84, 84, 0.75);
+    opacity: 0.75;
+}
+.book-home-form-name {
+    font-size: 30px;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+.book-home-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
 }
