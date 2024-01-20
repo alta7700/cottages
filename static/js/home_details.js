@@ -106,23 +106,32 @@
 
 
     const formDialog = document.querySelector('#book-home');
-    const form = formDialog.querySelector('form');
+    const form = formDialog.querySelector('.book-home-form');
+
+    formDialog.querySelector('.close-button').addEventListener('click', () => formDialog.close())
+    formDialog.addEventListener('close', () => {
+        datepicker.clear({'silent': true})
+        datepicker.visible && datepicker.hide();
+        form.reset();
+    })
 
     // добавляем календарь на dtrange
-    new AirDatepicker(form.querySelector('input[name="dtrange"]'), {
+    const datepicker = new AirDatepicker(form.querySelector('input[name="dtrange"]'), {
         range: true,
         minDate: new Date(),
         dateFormat: "dd.MM.yyyy",
         multipleDatesSeparator: " - ",
+        container: formDialog,
+        position: 'bottom center',
+        autoClose: true,
     })
 
     // добавляем на все кнопки "Забронировать" на обложке открытие формы с подстановкой имя и homeId в форму
     covers.querySelectorAll('.home-cover').forEach(cover => {
         cover.querySelector('.primary-button').addEventListener('click', (e) => {
-            formDialog.showPopover();
-            form.reset();
+            formDialog.showModal();
             form.querySelector('input[name="home"]').value = cover.dataset.homeId;
-            formDialog.querySelector('.book-home-form-name').textContent =
+            formDialog.querySelector('.book-home-head-name').textContent =
                 e.currentTarget.parentElement.querySelector('.home-cover__info__name').textContent;
         })
     })
@@ -144,11 +153,6 @@
         fetch('/ticket', {method: "post", body: formData})
             .then(res => {
                 if (res.status === 200) {
-                    const parent = form.parentElement;
-                    parent.removeChild(form);
-                    parent.dataset.completed = '';
-                    const text = parent.appendChild(document.createElement('p'));
-                    text.innerHTML = 'Заявка успешно отправлена.<br>Менеджер свяжется с вами для уточнения деталей.';
                     formDialog.close();
                     console.info('notify success');
                 }

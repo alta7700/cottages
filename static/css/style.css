@@ -1,5 +1,6 @@
 :root {
     --bgcolor: #f8f8f8;
+    --bgcolor-dark: color-mix(in srgb, var(--bgcolor) 80%, grey);
     --primary-color: #68aeda;
     --flipper-size: 20px;
     --flipper-thickness: 3px;
@@ -7,6 +8,7 @@
     --convenience-color: var(--primary-color);
     --link-color: black;
     --error-color: red;
+    --close-button-size: 30px;
 
     --tabs-color: var(--primary-color);
 
@@ -132,8 +134,7 @@ header {
 .tab-label:focus-visible {
     outline: color-mix(in srgb, var(--tabs-color), black) solid 2px;
 }
-.tab-label:hover:not([data-selected]),
-.tab-label:focus-visible {
+:is(.tab-label:focus-visible, .tab-label:hover):not([data-selected]) {
     transform: translateY(-3%);
 }
 .tab-label[data-selected] {
@@ -197,9 +198,26 @@ input[data-has-error] {
     white-space: nowrap;
     width: min-content;
 }
-.primary-button:hover:not([disabled]) {
-    transform: translateY(-3%);
+.primary-button:focus-visible {
+    outline: color-mix(in srgb, var(--tabs-color), black) solid 2px;
+}
+.primary-button:active {
+    transform: translateY(2%);
 }
 .primary-button[disabled] {
     background: #b7b7b7;
+}
+
+.close-button {
+    transition-duration: 0.25s;
+    padding: calc(var(--close-button-size)*0.1);
+    border-radius: 50%;
+}
+.close-button > svg {
+    display: block;
+    width: calc(var(--close-button-size)*0.8);
+    height: calc(var(--close-button-size)*0.8);
+}
+.close-button:hover {
+    background-color: var(--bgcolor-dark);
 }

@@ -69,18 +69,26 @@
 {% endblock %}
 
 {% block post_main %}
-    <div id="book-home" popover="manual">
-        <span class="book-home-form-name"></span>
-        <form class="book-home-form" novalidate>
-            {% csrf_token %}
-            {{ ticket_form.dtrange }}
-            {{ ticket_form.name }}
-            {{ ticket_form.phone_number }}
-            {{ ticket_form.guest_count }}
-            {{ ticket_form.home.as_hidden }}
-            <button type="submit" class="primary-button">Забронировать</button>
-        </form>
-    </div>
+    <dialog id="book-home">
+        <div class="book-home-container">
+            <div class="book-home-head">
+                <span class="book-home-head-plug"></span>
+                <span class="book-home-head-name"></span>
+                <button class="close-button" aria-label="Отменить бронирование">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill=currentColor" viewBox="0 -960 960 960"><path d="M256-213.847 213.847-256l224-224-224-224L256-746.153l224 224 224-224L746.153-704l-224 224 224 224L704-213.847l-224-224-224 224Z"></path></svg>
+                </button>
+            </div>
+            <form class="book-home-form" novalidate>
+                {% csrf_token %}
+                {{ ticket_form.dtrange }}
+                {{ ticket_form.name }}
+                {{ ticket_form.phone_number }}
+                {{ ticket_form.guest_count }}
+                {{ ticket_form.home.as_hidden }}
+                <button type="submit" class="primary-button">Забронировать</button>
+            </form>
+        </div>
+    </dialog>
 {% endblock %}
 
 {% block extra_scripts %}
