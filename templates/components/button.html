@@ -1,0 +1,5 @@
+<button class="button {{ size }} {{ color }}{% if icon_button %} icon-button{% endif %}">
+    {% if leading_icon %}{% include leading_icon %}{% endif %}
+    {% if text %}<span class="text">{{ text }}</span>{% endif %}
+    {% if trailing_icon %}{% include trailing_icon %}{% endif %}
+</button>

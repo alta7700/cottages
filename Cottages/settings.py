@@ -1,5 +1,7 @@
 import os
 from pathlib import Path
+
+import phonenumbers
 from dotenv import load_dotenv
 
 
@@ -97,7 +99,7 @@ USE_TZ = False
 
 
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATICFILES_DIRS = (BASE_DIR / 'static', )
+STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_URL = '/static/'
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
 
@@ -108,3 +110,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 PHONENUMBER_DEFAULT_REGION = 'RU'
 PHONENUMBER_DEFAULT_FORMAT = 'E164'
+
+ORGANIZATION_NAME = os.environ['ORGANIZATION_NAME']
+ORGANIZATION_PHONES = [
+    phonenumbers.parse(phone, 'RU', True)
+    for phone in os.environ['ORGANIZATION_PHONES'].split(',') if phone
+]
+ORGANIZATION_MAIN_PHONE = ORGANIZATION_PHONES[0]

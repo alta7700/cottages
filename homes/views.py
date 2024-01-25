@@ -7,18 +7,9 @@ from .forms import TicketForm
 from .service import HomeService
 
 
-nav = {
-    'Главная': 'homes:index',
-    'Все дома': 'homes:homes',
-    'Контакты': 'homes:contacts'
-}
-
-
 class BaseHomeDetailsView(TemplateView):
     extra_context = {
         'title': 'Аренда котеджей в Краснодаре',
-        'current_link': 'homes:index',
-        'nav': nav,
     }
     ticket_form = TicketForm()
 
@@ -49,7 +40,7 @@ class HomeDetailsView(BaseHomeDetailsView):
     def get(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
         if 'initial_home' not in context:
-            return HttpResponseRedirect(reverse('homes:index'))
+            return HttpResponseRedirect(reverse('index'))
         return self.render_to_response(context)
 
 
@@ -57,8 +48,6 @@ class AllHomesView(TemplateView):
     template_name = 'homes/all_homes.html'
     extra_context = {
         'title': 'Аренда котеджей в Краснодаре',
-        'current_link': 'homes:homes',
-        'nav': nav,
     }
 
     def get_context_data(self, **kwargs):

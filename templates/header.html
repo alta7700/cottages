@@ -1,0 +1,10 @@
+{% load homes_extras %}
+
+<header class="header">
+    <nav class="navbar">
+        {% for name, link in nav.items %}
+            <a class="navlink headline-5" href="{% url link %}" {% if link == current_link %}data-current{% endif %}>{{ name }}</a>
+        {% endfor %}
+    </nav>
+    <a class="headline-5 header-phone mobile-hidden " href="tel:{{ org_phone_e164 }}">{{ org_phone }}</a>
+</header>

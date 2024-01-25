@@ -33,14 +33,14 @@ class Home(models.Model):
     ya_map = models.TextField(blank=True, default='', verbose_name='Код яндекс карт')
     video = models.TextField(blank=True, default='', verbose_name='Код на видео Youtube')
 
-    has_wifi = models.BooleanField(default=False, verbose_name='Есть Wi-Fi')
-    has_minibar = models.BooleanField(default=False, verbose_name='Есть минибар')
-    has_parking = models.BooleanField(default=False, verbose_name='Есть парковка')
-    has_hairdryer = models.BooleanField(default=False, verbose_name='Есть фен')
-    has_workspace = models.BooleanField(default=False, verbose_name='Есть рабочая зона')
-    has_safe = models.BooleanField(default=False, verbose_name='Есть сейф')
-    has_washing_machine = models.BooleanField(default=False, verbose_name='Есть стиральная машина')
-    has_swimming_pool = models.BooleanField(default=False, verbose_name='Есть бассейн')
+    conv_wifi = models.BooleanField(default=False, verbose_name='Wi-Fi')
+    conv_minibar = models.BooleanField(default=False, verbose_name='Минибар')
+    conv_parking = models.BooleanField(default=False, verbose_name='Парковка')
+    conv_hairdryer = models.BooleanField(default=False, verbose_name='Фен')
+    conv_workspace = models.BooleanField(default=False, verbose_name='Рабочая зона')
+    conv_safe = models.BooleanField(default=False, verbose_name='Сейф')
+    conv_washing_machine = models.BooleanField(default=False, verbose_name='Стиральная машина')
+    conv_swimming_pool = models.BooleanField(default=False, verbose_name='Бассейн')
 
     class Meta:
         db_table = 'homes'
@@ -51,14 +51,13 @@ class Home(models.Model):
     def __str__(self):
         return self.name
 
-    @classmethod
-    def get_conveniences(cls) -> dict[str, str]:
-        if not hasattr(cls, '_conveniences_cached'):
-            setattr(cls, '_conveniences_cached', {
-                field.name[4:]: field.verbose_name
-                for field in cls._meta.local_fields if field.name.startswith('has_')
-            })
-        return getattr(cls, '_conveniences_cached')
+    @property
+    def conveniences(self):
+        return {
+            field.name[5:]: field.verbose_name
+            for field in self.__class__._meta.local_fields
+            if field.name.startswith('conv_') and getattr(self, field.name)
+        }
 
 
 def carousel_image_path(instance: "HomeCarouselImage", *_):

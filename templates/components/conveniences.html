@@ -1,0 +1,9 @@
+<div class="conveniences">
+    {% if add_text %}<p>Удобства: </p>{% endif %}
+    {% for icon, desc in conveniences.items %}
+        <div class="conveniences__item">
+            <div class="tooltip"><p>{{ desc }}</p></div>
+            {% include icon %}
+        </div>
+    {% endfor %}
+</div>

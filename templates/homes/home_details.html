@@ -1,11 +1,1 @@
-{% extends 'homes/base_home_details.html' %}
-
-{% block seo %}
-    {{ block.super }}
-    <meta name="description" content="От {{ initial_home.cost_per_day }}руб/сутки\n{{ initial_home.short_description }}">
-{% endblock %}
-
-{% block extra_scripts %}
-    <script>const initialHomeId = {{ initial_home.id }};</script>
-    {{ block.super }}
-{% endblock %}
+{% extends 'homes/base_detail.html' %}
