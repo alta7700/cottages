@@ -16,6 +16,9 @@ def button(
         icon: str = None,
         leading_icon: str = None,
         trailing_icon: str = None,
+        extra_classes: str = None,
+        type: str = 'button',
+        id: str = None,
 ):
     leading_icon = leading_icon or icon
     assert text or leading_icon
@@ -26,6 +29,9 @@ def button(
         'leading_icon': f'svg/{leading_icon}.html' if leading_icon else None,
         'trailing_icon': f'svg/{trailing_icon}.html' if trailing_icon else None,
         'icon_button': not text,
+        'extra_classes': extra_classes,
+        'type': type,
+        'id': id,
     }
 
 

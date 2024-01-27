@@ -48,5 +48,9 @@
     {% site_header request %}
     <main>{% block content %}{% endblock %}</main>
     {% site_footer %}
+    
+    <div id="portals">{% block portals %}{% endblock %}</div>
+    
+    {% block extra_script %}{% endblock %}
 </body>
 </html>

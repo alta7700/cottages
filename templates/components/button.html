@@ -1,4 +1,8 @@
-<button class="button {{ size }} {{ color }}{% if icon_button %} icon-button{% endif %}">
+<button 
+        {% if id %}id="{{ id }}"{% endif %} 
+        type="{{ type }}" 
+        class="button {{ size }} {{ color }}{% if icon_button %} icon-button{% endif %} {% if extra_classes %}{{ extra_classes }}{% endif %}"
+>
     {% if leading_icon %}{% include leading_icon %}{% endif %}
     {% if text %}<span class="text">{{ text }}</span>{% endif %}
     {% if trailing_icon %}{% include trailing_icon %}{% endif %}

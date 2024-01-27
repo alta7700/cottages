@@ -1,0 +1,11 @@
+{% load components %}
+
+<div id="ticket-form-portal" class="portal">
+    <div class="overlay"></div>
+    <div class="modal">
+        <div class="close-ticket-form--wrapper">
+            {% button icon='close' color='light' id='close-ticket-form' %}
+        </div>
+        {% include 'homes/ticket-form.html' %}
+    </div>
+</div>

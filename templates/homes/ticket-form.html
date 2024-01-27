@@ -1,0 +1,41 @@
+{% load components %}
+<form id="ticket-form">
+    <span class="headline-3">Забронировать дом</span>
+    <div class="ticket-form-fields">
+        <div class="input-container">
+            <span class="input-label text">Как к Вам обращаться?</span>
+            <div class="input-wrapper">
+                <input placeholder="Введите Ваше имя" type="text" name="name" class="input text" maxlength="10" required aria-label="Как к Вам обращаться?"/>
+            </div>
+        </div>
+        <div class="input-container">
+            <span class="input-label">Количество гостей</span>
+            <div class="number-input">
+                {% button icon='minus' color='light' extra_classes='number-input-minus'%}
+                <div class="input-wrapper">
+                    <input type="text" name="guests" class="input text" min="1" value="2" required aria-label="Количество гостей"/>
+                </div>
+                {% button icon='plus' color='light' extra_classes='number-input-plus'%}
+            </div>
+        </div>
+        <div class="input-container">
+            <span class="input-label text">Введите ваш телефон</span>
+            <div class="input-wrapper">
+                <span class="phone-input-prefix text">+7&nbsp;</span>
+                <input type="tel" name="phone" class="input text" aria-label="Введите ваш телефон"/>
+            </div>
+        </div>
+        <div class="input-container">
+            <span class="input-label text">Выберите даты</span>
+            <div class="input-wrapper">
+                <input type="text" name="dtrange" class="input text" placeholder="ДД.ММ.ГГ - ДД.ММ.ГГ" readonly aria-label="Выберите даты"/>
+                <div class="input-icon-helper" role="button" aria-label="Начать выбор дат">
+                    {% include 'svg/calendar.html' %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="submit-row">
+        {% button type='submit' size='l' text='Забронировать' %}
+    </div>
+</form>

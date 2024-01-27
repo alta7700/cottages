@@ -1,17 +1,21 @@
 :root {
-    --color-background-main: rgba(249 245 242 / 1);
+    --color-background-main: rgba(255 255 255 / 1);
+    --color-background-secondary: rgba(249 245 242 / 1);
     --color-interface-dark: rgba(41 37 33 / 1);
     --color-interface-medium: rgba(140 140 140 / 1);
     --color-interface-light: rgba(229 229 229 / 1);
     --color-interface-white: rgba(255 255 255 / 1);
+    --color-interface-error: rgba(237 28 36 / 1);
     --color-text-dark: rgba(41 37 33 / 1);
     --color-text-medium: rgba(140 140 140 / 1);
     --color-text-light: rgba(193 180 168 / 1);
     --color-text-white: rgba(255 255 255 / 1);
+    --color-text-error: rgba(237 28 36 / 1);
 
     --header-height: 60px;
 
     --animation-duration: 100ms;
+
 }
 body {
     font-family: 'Inter', sans-serif;
@@ -19,6 +23,10 @@ body {
     min-height: 100dvh;
     display: flex;
     flex-direction: column;
+    background-color: var(--color-background-main);
+}
+body:has(.portal[data-open]) {
+    overflow: hidden;
 }
 main {
     flex: 1;
@@ -37,12 +45,8 @@ main {
     flex-direction: row;
     gap: 24px;
 }
-.navlink {
-
-}
-.header-phone {
-
-}
+.navlink {}
+.header-phone {}
 
 .footer {
     display: flex;
@@ -107,17 +111,93 @@ main {
     background-color: var(--color-interface-dark);
     color: var(--color-text-white);
 }
+.button:disabled {
+    cursor: default;
+}
+.button.dark:disabled {
+    background-color: var(--color-text-medium);
+}
 .button.light {
     background-color: var(--color-interface-white);
     color: var(--color-text-dark);
 }
+.button.light:disabled {
+    color: var(--color-interface-light);
+}
 @media (hover: hover) {
-    .button.dark:hover {
+    .button.dark:hover:not(:disabled) {
         background-color: var(--color-interface-medium);
     }
-    .button.light:hover {
+    .button.light:hover:not(:disabled) {
         background-color: var(--color-interface-light);
     }
+}
+
+.input-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+}
+.input-label {
+    color: var(--color-text-medium);
+    font-size: 13px;
+}
+.input-wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    height: 40px;
+    border-radius: 8px;
+    border: var(--color-interface-light) 1px solid;
+    padding-inline: 12px;
+    transition-duration: var(--animation-duration);
+}
+.input-wrapper:has(.input[data-filled]), .input-wrapper:focus-within {
+    border-color: var(--color-interface-medium);
+}
+.input-wrapper:has(.input[data-has-error]){
+    border-color: var(--color-interface-error);
+}
+.input-icon-helper {
+    cursor: pointer;
+    line-height: 0;
+}
+.input-icon-helper > svg {
+    width: 18px;
+    height: 18px;
+    fill: var(--color-text-medium);
+}
+
+.input {
+    width: 100%;
+    font-size: 13px;
+    height: 100%;
+}
+
+.phone-input-prefix {
+    font-size: 13px;
+}
+
+.number-input {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 4px;
+}
+.number-input > .input-wrapper {
+    width: 48px;
+    justify-content: center;
+    padding-inline: 6px;
+}
+.number-input .input {
+    text-align: center;
+    appearance: none;
+}
+.number-input .input::-webkit-outer-spin-button,
+.number-input .input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
 }
 
 
@@ -169,4 +249,126 @@ main {
     from {
         transform: scale(0) translate(-50%, -100%);
     }
+}
+
+.portal {
+    position: fixed;
+    inset: 0;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.portal[data-open] {
+    display: flex;
+}
+.overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background-color: color-mix(in srgb, var(--color-interface-dark), transparent);
+}
+.modal {
+    position: relative;
+    max-width: 480px;
+    width: 100%;
+    max-height: 100%;
+    background-color: var(--color-interface-white);
+    margin: auto;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+}
+.close-ticket-form--wrapper {
+    display: contents;
+}
+#close-ticket-form {
+    position: absolute;
+    right: -12px;
+    top: 0;
+    transform: translateX(100%);
+}
+
+#ticket-form {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    padding: 32px;
+    overflow-y: auto;
+}
+.ticket-form-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+.submit-row {
+    width: 100%;
+}
+.submit-row .button:not(.icon-button) {
+    width: 100%;
+}
+@media (width <= 800px) {
+    @keyframes show-portal {
+        from {transform: translateY(-100%)}
+        to {transform: translateY(0)}
+    }
+    .portal {
+        animation-name: show-portal;
+        animation-duration: calc(var(--animation-duration) * 2);
+    }
+    .close-ticket-form--wrapper {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        padding-inline-end: 32px;
+    }
+    #close-ticket-form {
+        position: static;
+        transform: none;
+    }
+    .overlay {
+        background-color: var(--color-interface-white);
+    }
+}
+
+.air-datepicker {
+    --adp-font-family: Inter, sans-serif;
+    --adp-transition-duration: var(--animation-duration);
+    --adp-border-radius: 8px;
+    --adp-cell-border-radius: 4px;
+    --adp-background-color: var(--color-background-main);
+
+    --adp-accent-color: var(--color-interface-medium);
+    --adp-background-color-hover: rgba(240 240 240 / 1);
+    --adp-background-color-active: rgba(234 234 234 /1);
+    --adp-background-color-in-range: color-mix(in srgb, var(--adp-accent-color), transparent 80%);
+    --adp-background-color-in-range-focused: color-mix(in srgb, var(--adp-accent-color), transparent 70%);
+    --adp-background-color-selected-other-month: var(--adp-accent-color);
+    --adp-background-color-selected-other-month-focused: color-mix(in srgb, var(--adp-accent-color) 80%, var(--color-interface-dark));
+    --adp-color-disabled: var(--color-text-light);
+    --adp-color-other-month: color-mix(in srgb, var(--adp-color-disabled), var(--adp-accent-color));
+    --adp-cell-background-color-selected: var(--adp-accent-color);
+    --adp-cell-background-color-selected-hover: color-mix(in srgb, var(--adp-accent-color) 80%, var(--color-interface-dark));
+    --adp-cell-background-color-in-range: var(--adp-background-color-in-range);
+    --adp-cell-background-color-in-range-hover: var(--adp-background-color-in-range-focused);
+    --adp-cell-border-color-in-range: var(--adp-cell-background-color-selected);
+    --adp-day-name-color: var(--color-text-dark);
+    --adp-color-current-date: var(--color-interface-medium);
+
+    border: none;
+}
+.air-datepicker--buttons {
+    padding: 0;
+    overflow: hidden;
+    border-top: none;
+}
+.air-datepicker-button {
+    border-radius: 0 0 var(--adp-border-radius) var(--adp-border-radius);
+    color: var(--color-text-medium);
+    background-color: var(--color-background-secondary);
+    transition-duration: var(--animation-duration);
+}
+.air-datepicker-button:hover {
+    background-color: var(--color-interface-light);
 }
