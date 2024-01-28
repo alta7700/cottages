@@ -3,92 +3,6 @@
 
 {% block content %}
     {% button text='Забронировать' size='l' id='open-ticket-form' %}
-    <p>xx</p>
-    <p>xx</p>
-    <p>xx</p>
-    <p>xx</p>
-    <p>xx</p>
-    <p>xx</p>
-    <p>xx</p>
-    <p>xx</p>
-    <p>xx</p>
-    <p>xx</p>
-    <p>xx</p>
-    <p>xx</p>
-    <p>xx</p>
-    <p>xx</p>
-    <p>xx</p>
-    <p>xx</p>
-    <p>xx</p>
-    <p>xx</p>
-    <p>xx</p>
-    <p>xx</p>
-    <p>xx</p>
-    <p>xx</p>
-    <p>xx</p>
-    <p>xx</p>
-    <p>xx</p>
-    <p>xx</p>
-    <p>xx</p>
-    <p>xx</p>
-    <p>xx</p>
-    <p>xx</p>
-    <p>xx</p>
-    <p>xx</p>
-    <p>xx</p>
-    <p>xx</p>
-    <p>xx</p>
-    <p>xx</p>
-    <p>xx</p>
-    <p>xx</p>
-    <p>xx</p>
-    <p>xx</p>
-    <p>xx</p>
-    <p>xx</p>
-    <p>xx</p>
-    <p>xx</p>
-    <p>xx</p>
-    <p>xx</p>
-    <p>xx</p>
-    <p>xx</p>
-    <p>xx</p>
-    <p>xx</p>
-    <p>xx</p>
-    <p>xx</p>
-    <p>xx</p>
-    <p>xx</p>
-    <p>xx</p>
-    <p>xx</p>
-    <p>xx</p>
-    <p>xx</p>
-    <p>xx</p>
-    <p>xx</p>
-    <p>xx</p>
-    <p>xx</p>
-    <p>xx</p>
-    <p>xx</p>
-    <p>xx</p>
-    <p>xx</p>
-    <p>xx</p>
-    <p>xx</p>
-    <p>xx</p>
-    <p>xx</p>
-    <p>xx</p>
-    <p>xx</p>
-    <p>xx</p>
-    <p>xx</p>
-    <p>xx</p>
-    <p>xx</p>
-    <p>xx</p>
-    <p>xx</p>
-    <p>xx</p>
-    <p>xx</p>
-    <p>xx</p>
-    <p>xx</p>
-    <p>xx</p>
-    <p>xx</p>
-    <p>xx</p>
-    <p>xx</p>
 {% endblock %}
 {% block portals %}
     {% include 'homes/ticket-modal.html' %}
@@ -103,4 +17,7 @@
     {{ block.super }}
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/air-datepicker@3.4.0/air-datepicker.min.js"></script>
     <script src="{% static 'js/form.js' %}"></script>
+    <script>
+        document.querySelector('#open-ticket-form').addEventListener('click', () => ticketFormPortal.show('1'))
+    </script>
 {% endblock %}

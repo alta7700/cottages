@@ -2,6 +2,7 @@ import uuid
 
 from django.db import models
 from django.conf import settings
+from django.core.validators import MinLengthValidator
 from phonenumber_field.modelfields import PhoneNumberField
 from ckeditor.fields import RichTextField
 
@@ -68,6 +69,7 @@ class HomeCarouselImage(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     home = models.ForeignKey(Home, on_delete=models.CASCADE, related_name='carousel')
     position = models.PositiveIntegerField(verbose_name='Позиция в карусели')
+    name = models.CharField(max_length=30, validators=[MinLengthValidator(1)], blank=False, verbose_name='Название')
     image = models.ImageField(
         upload_to=carousel_image_path, validators=[validate_16x9_jpeg], help_text='Только JPEG 16x9',
         verbose_name='Фото'
@@ -77,7 +79,6 @@ class HomeCarouselImage(models.Model):
         db_table = 'home_carousel_images'
         verbose_name = 'Дополнительная фотография дома'
         verbose_name_plural = 'Дополнительные фотографии дома (карусель)'
-        unique_together = ('home', 'position')
         ordering = ('position',)
 
     @property

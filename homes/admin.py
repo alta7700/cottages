@@ -7,7 +7,7 @@ from .parsers import YaMapScriptParser, YTIframeParser
 
 class CarouselInline(admin.StackedInline):
     model = HomeCarouselImage
-    fields = ('position', 'image')
+    fields = ('position', 'name', 'image')
     max_num = 10
     extra = 0
 

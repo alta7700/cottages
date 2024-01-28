@@ -1,0 +1,46 @@
+{% load components %}
+
+<a class="home-card" href="{% url 'detail' home.slug %}" data-home-id="{{ home.id }}">
+    <div class="home-card--images">
+        <div class="home-card--images-cover">
+            <img src="{{ home.cover.url }}" alt loading="lazy"/>
+        </div>
+        <div class="home-card--images-carousel">
+            {% for image in home.carousel.all %}
+                <img src="{{ image.url }}" alt loading="lazy"/>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="home-card--about">
+        <h3>{{ home.name }}</h3>
+        <div class="home-card--about-address">
+            {% include 'svg/location.html' %}
+            <span class="text">{{ home.address }}</span>
+        </div>
+        <ul class="home-card--about-pluses">
+            {% with max_list_count=6 neg_max_list_count='-6' %}
+                {% for image in home.carousel.all %}
+                    {% if forloop.counter == max_list_count %}
+                        {% if home.carousel.all|length == max_list_count %}
+                            <li><span class="text">{{ image.name }}</span></li>
+                        {% else %}
+                            <li><span class="text">... и ещё {{ home.carousel.all|length|add:neg_max_list_count }}</span></li>
+                        {% endif %}
+                    {% elif forloop.counter < max_list_count %}
+                        <li><span class="text">{{ image.name }}</span></li>
+                    {% endif %}
+                {% endfor %}
+            {% endwith %}
+        </ul>
+    </div>
+    <div class="home-card--book">
+        <div class="home-card--book-btn-wrapper">
+            {% button text='Забронировать' size='l' %}
+        </div>
+        {% conveniences home=home add_text=false %}
+        <div class="home-card--book-cost">
+            <span class="text">от {{ home.cost_per_day }} ₽ / сутки</span>
+            <span class="text large">от {{ home.cost_per_day }} ₽ / сутки</span>
+        </div>
+    </div>
+</a>

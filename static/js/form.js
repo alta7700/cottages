@@ -1,5 +1,6 @@
+const ticketFormPortal = document.querySelector('#ticket-form-portal');
+
 document.addEventListener("DOMContentLoaded", () => {
-    const ticketFormPortal = document.querySelector('#ticket-form-portal');
     const ticketForm = document.querySelector('#ticket-form');
 
     // PhoneField //////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -53,7 +54,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 delete input.dataset.filled;
             }
         }
-        const inputEl = ticketForm.querySelector('.input[name="phone"]');
+        const inputEl = ticketForm.querySelector('.input[name="phone_number"]');
         inputEl.addEventListener('input', onPhoneInput, false);
         inputEl.addEventListener('change', (e) => onPhoneInput(e, true), false);
         inputEl.addEventListener('paste', onPhonePaste, false);
@@ -108,16 +109,21 @@ document.addEventListener("DOMContentLoaded", () => {
             delete input.dataset.hasError;
             input.dataset.filled = '';
         }
-        const inputEl = ticketForm.querySelector('.input[name="guests"]');
+        const inputEl = ticketForm.querySelector('.input[name="guest_count"]');
+        inputEl.setValue = (value) => {
+            if (value === undefined) value = inputEl.value === '' ? null : inputEl.value;
+            console.log(value)
+            setValue(inputEl, value);
+        };
         const minusButton  = inputEl.parentElement.parentElement.querySelector('.number-input-minus');
         const plusButton  = inputEl.parentElement.parentElement.querySelector('.number-input-plus');
         minusButton?.addEventListener('click', () => {
             let value = getValidInteger(inputEl.value);
-            setValue(inputEl, value !== null ? value - 1 : null);
+            inputEl.setValue(value !== null ? value - 1 : null);
         })
         plusButton?.addEventListener('click', () => {
             let value = getValidInteger(inputEl.value);
-            setValue(inputEl, value !== null ? value + 1 : null);
+            inputEl.setValue(value !== null ? value + 1 : null);
         })
         inputEl.addEventListener('change', () => {
             let value = getValidInteger(inputEl.value);
@@ -126,9 +132,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 delete inputEl.dataset.filled
                 return
             }
-            setValue(inputEl, value);
+            inputEl.setValue(value);
         })
-        setValue(inputEl, inputEl.value ? inputEl.value : null)
+        inputEl.setValue(inputEl.value ? inputEl.value : null)
     })();
 
     // DateRangeField //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -191,16 +197,60 @@ document.addEventListener("DOMContentLoaded", () => {
         })
     })();
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    document.querySelector('#open-ticket-form').addEventListener('click', () => {
+    ticketFormPortal.show = function(homeId) {
         ticketFormPortal.dataset.open = '';
-        document.addEventListener('keydown', function closeTicketFormOnEscape(e) {
-            if (e.key === 'Escape') delete ticketFormPortal.dataset.open;
-            document.removeEventListener('keydown', closeTicketFormOnEscape)
-        })
-    })
+        ticketForm.querySelector('[name="home"]').value = homeId.toString();
 
-    document.querySelector('#close-ticket-form').addEventListener('click', () => {
+        function closeTicketFormOnEscape(e) {
+            if (e.key === 'Escape') ticketFormPortal.hide();
+        }
+        document.addEventListener('keydown', closeTicketFormOnEscape);
+        ticketFormPortal.hide = function() {
+            ticketFormPortal._hide();
+            document.removeEventListener('keydown', closeTicketFormOnEscape);
+        }
+    }
+    ticketFormPortal.hide = ticketFormPortal._hide = function() {
         delete ticketFormPortal.dataset.open;
+        ticketForm.reset();
+    }
+
+    document.querySelector('#close-ticket-form').addEventListener('click', () => ticketFormPortal.hide())
+
+
+    ticketForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        ticketForm.querySelectorAll('button[type="submit"], input').forEach(el => {
+            el.disabled = true;
+        });
+        fetch('/ticket', {method: "post", body: formData})
+            .then(res => {
+                if (res.status === 200) {
+                    ticketFormPortal.hide();
+                    alert('С Вами свяжутся');
+                }
+                if (res.status === 400) return res.json()
+            })
+            .then(data => {
+                if (data?.errors) {
+                    data.errors.forEach(fieldName => {
+                        ticketForm.querySelector(`input[name="${fieldName}"]`).dataset.hasError = '';
+                    })
+                }
+            })
+            .catch(() => {
+                ticketFormPortal.hide();
+                alert('Произошла какая-то ошибка, с Вами НЕ свяжутся');
+            })
+            .finally(() => {
+                ticketForm.querySelectorAll('button[type="submit"], input').forEach(el => {
+                    el.disabled = false;
+                });
+            });
+    });
+    ticketForm.addEventListener('reset', (e) => {
+        // чтобы сбрасывалось или накладывалось disable на кнопки плюса и минуса у инпута
+        setTimeout(() => ticketForm.querySelector('.input[name="guest_count"]').setValue(), 50);
     })
 });

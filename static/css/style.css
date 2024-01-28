@@ -27,6 +27,7 @@ body {
 }
 body:has(.portal[data-open]) {
     overflow: hidden;
+    margin-inline-end: 17px;
 }
 main {
     flex: 1;
@@ -308,7 +309,7 @@ main {
 .submit-row .button:not(.icon-button) {
     width: 100%;
 }
-@media (width <= 800px) {
+@media (width <= 600px) {
     @keyframes show-portal {
         from {transform: translateY(-100%)}
         to {transform: translateY(0)}
@@ -371,4 +372,157 @@ main {
 }
 .air-datepicker-button:hover {
     background-color: var(--color-interface-light);
+}
+
+
+.homes-list {
+    padding-block: 20px;
+    padding-inline: 20px;
+    display: grid;
+    gap: 24px;
+    justify-items: center;
+}
+main:has(.homes-list) {
+    background-color: var(--color-background-secondary);
+}
+.home-card {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    cursor: pointer;
+    border-radius: 20px;
+    padding: 0;
+    transition-duration: var(--animation-duration);
+    background-color: var(--color-interface-white);
+}
+.home-card:hover {
+    filter: drop-shadow(0 4px 16px rgba(0, 0, 0, 0.1));
+}
+.home-card--images img {
+    object-fit: cover;
+    border-radius: 12px;
+}
+.home-card--about {
+    color: var(--color-text-dark);
+}
+.home-card--about-address {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    margin-block-start: 8px;
+    color: var(--color-text-medium);
+}
+.home-card--about-address svg {
+    width: 18px;
+    height: 18px;
+}
+.home-card--about-pluses {
+    margin-block-start: 20px;
+    list-style: disc inside;
+}
+
+.home-card--book {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+}
+.home-card--book-cost {
+    color: var(--color-text-dark);
+}
+@media (width > 1050px) {
+    .home-list {
+        padding-block: 40px;
+        grid-template-columns: 1fr;
+    }
+    .home-card {
+        flex-direction: row;
+        gap: 24px;
+        padding: 24px;
+        max-width: 1200px;
+    }
+    .home-card--images {
+        display: grid;
+        grid-template-areas:
+            'C C C'
+            'i1 i2 i3';
+        grid-template-rows: 3fr 1fr;
+        grid-template-columns: repeat(3, 1fr);
+        width: 400px;
+        aspect-ratio: 4/3;
+        gap: 10px;
+    }
+    .home-card--images-cover > img {
+        grid-area: C;
+    }
+    .home-card--images-cover, .home-card--images-carousel {
+        display: contents;
+    }
+    .home-card--images-carousel > img:not(.i1, .i2, .i3) {
+        display: none;
+    }
+    .home-card--images-carousel > .i1 {grid-area: i1}
+    .home-card--images-carousel > .i2 {grid-area: i2}
+    .home-card--images-carousel > .i3 {grid-area: i3}
+    .home-card--about {
+        flex: 1;
+    }
+    .home-card--book .conveniences {
+        display: none;
+    }
+    .home-card--book-cost > :not(.large) {
+        display: none;
+    }
+}
+@media (width <= 1050px) {
+    .homes-list {
+        grid-template-columns: 1fr 1fr;
+    }
+    .home-card {
+        max-width: 460px;
+    }
+    .home-card--images img {
+        aspect-ratio: 440/375;
+        border-radius: 20px 20px 0 0;
+    }
+    .home-card--images-carousel {
+        display: none;
+    }
+    .home-card--about-pluses, .home-card--book-btn-wrapper {
+        display: none;
+    }
+    .home-card--about {
+        padding: 24px 24px 4px 24px;
+    }
+    .home-card--book {
+        flex-direction: row;
+        gap: 0;
+        padding-inline: 24px;
+        padding-block: 10px;
+        justify-content: space-between;
+    }
+    .home-card--book-cost > .large {
+        display: none;
+    }
+}
+@media (width <= 900px) {
+    .homes-list {
+        grid-template-columns: 1fr;
+    }
+}
+@media (width <= 600px) {
+    .homes-list {
+        padding-inline: 0;
+    }
+    .home-card--book .conveniences {
+        display: none;
+    }
+}
+@media (width <= 480px) {
+    .home-card {
+        border-radius: 0;
+    }
+    .home-card--images-cover img {
+        border-radius: 0;
+    }
 }

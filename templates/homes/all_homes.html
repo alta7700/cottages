@@ -1,5 +1,37 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
-    
+    <div class="homes-list">
+        {% for home in homes %}
+            {% include 'homes/home-card.html' with home=home %}
+        {% endfor %}
+        {% for home in homes %}
+            {% include 'homes/home-card.html' with home=home %}
+        {% endfor %}
+        {% for home in homes %}
+            {% include 'homes/home-card.html' with home=home %}
+        {% endfor %}
+        {% for home in homes %}
+            {% include 'homes/home-card.html' with home=home %}
+        {% endfor %}
+        {% for home in homes %}
+            {% include 'homes/home-card.html' with home=home %}
+        {% endfor %}
+    </div>
+{% endblock %}
+{% block portals %}
+    {% include 'homes/ticket-modal.html' %}
+{% endblock %}
+
+{% block lib_styles %}
+    {{ block.super }}
+    <link href="https://cdn.jsdelivr.net/npm/air-datepicker@3.4.0/air-datepicker.min.css" rel="stylesheet">
+{% endblock %}
+
+{% block extra_script %}
+    {{ block.super }}
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/air-datepicker@3.4.0/air-datepicker.min.js"></script>
+    <script src="{% static 'js/form.js' %}"></script>
+    <script src="{% static 'js/all_homes.js' %}"></script>
 {% endblock %}

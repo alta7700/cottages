@@ -27,8 +27,11 @@ aside, nav, footer, header, section, main {
 	display: block;
 }
 
-ul, ul li {
+ul {
 	list-style: none;
+}
+ul li {
+	list-style: inherit;
 }
 
 img {
@@ -38,6 +41,7 @@ img {
 img, svg {
 	max-width: 100%;
 	height: auto;
+	display: block;
 }
 
 address {
