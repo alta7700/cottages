@@ -117,3 +117,6 @@ ORGANIZATION_PHONES = [
     for phone in os.environ['ORGANIZATION_PHONES'].split(',') if phone
 ]
 ORGANIZATION_MAIN_PHONE = ORGANIZATION_PHONES[0]
+ORGANIZATION_MAILS = tuple(mail.strip() for mail in os.environ.get('ORGANIZATION_MAILS', '').split(',') if mail)
+
+GENERAL_MAP = os.environ['GENERAL_MAP']

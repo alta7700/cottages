@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="contacts">
+    <div class="contacts-text">
+        <h1>Контакты</h1>
+        <div class="contacts-text--phones">
+            <p class="large">Телефоны для связи</p>
+            {% for phone in phones %}
+                <ul class="contacts-text--phones-list color-medium">
+                    <li><a class="text large" href="tel:{{ phone.e164 }}">{{ phone.display }}</a></li>
+                </ul>
+            {% endfor %}
+        </div>
+        {% if instagram %}
+            <div class="contacts-text--instagram">
+                <p class="large">Instagram</p>
+                <p class="large color-medium">{{ instagram }}</p>
+            </div>
+        {% endif %}
+        {% if mails %}
+            <div class="contacts-text--mails">
+                <p class="large">Почта</p>
+                {% for mail in mails %}
+                    <ul class="contacts-text--mails-list color-medium">
+                        <li><a class="text large" href="mailto:{{ mail }}">{{ mail }}</a></li>
+                    </ul>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+    <div class="contacts-map">{{ map }}</div>
+</div>
+{% endblock %}

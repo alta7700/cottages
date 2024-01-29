@@ -1,0 +1,27 @@
+{% load components %}
+
+<div class="home-carousel">
+    <div class="swiper desktop-hidden" data-carousel-thumb>
+        <div class="swiper-wrapper">
+            {% for image in carousel %}
+                <div class="swiper-slide" data-name="{{ image.name }}">
+                    <button class="carousel-imag-name button medium">
+                        <span class="text">{{ image.name }}</span>
+                    </button>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="swiper" data-carousel>
+        <div class="swiper-wrapper">
+            {% for image in carousel %}
+                <div class="swiper-slide" data-name="{{ image.name }}">
+                    <img src="{{ image.url }}" alt loading="lazy" />
+                </div>
+            {% endfor %}
+        </div>
+        <div class="carousel-pagination"></div>
+        {% button icon='arrow' size='l' extra_classes='carousel-prev' color='light' %}
+        {% button icon='arrow' size='l' extra_classes='carousel-next' color='light' %}
+    </div>
+</div>

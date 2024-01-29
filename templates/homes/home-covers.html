@@ -1,0 +1,19 @@
+{% load components %}
+<div class="home-covers">
+    <h1>Аренда коттеджей в центре Краснодара</h1>
+    {% button text='Забронировать' size='l' color='light' extra_classes='home-covers--book-btn' %}
+    <div class="swiper">
+        <div class="swiper-wrapper">
+            {% for home in homes %}
+                <div class="swiper-slide" data-home-id="{{ home.id }}">
+                    <img src="{{ home.cover.url }}" alt loading="lazy"/>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="home-covers-nav">
+        {% button icon='arrow' size='l' extra_classes='home-covers-prev' color='light' %}
+        <div class="home-covers-pages color-white"></div>
+        {% button icon='arrow' size='l' extra_classes='home-covers-next' color='light' %}
+    </div>
+</div>

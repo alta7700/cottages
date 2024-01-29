@@ -112,7 +112,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const inputEl = ticketForm.querySelector('.input[name="guest_count"]');
         inputEl.setValue = (value) => {
             if (value === undefined) value = inputEl.value === '' ? null : inputEl.value;
-            console.log(value)
             setValue(inputEl, value);
         };
         const minusButton  = inputEl.parentElement.parentElement.querySelector('.number-input-minus');
@@ -197,26 +196,13 @@ document.addEventListener("DOMContentLoaded", () => {
         })
     })();
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ticketFormPortal.show = function(homeId) {
-        ticketFormPortal.dataset.open = '';
-        ticketForm.querySelector('[name="home"]').value = homeId.toString();
 
-        function closeTicketFormOnEscape(e) {
-            if (e.key === 'Escape') ticketFormPortal.hide();
-        }
-        document.addEventListener('keydown', closeTicketFormOnEscape);
-        ticketFormPortal.hide = function() {
-            ticketFormPortal._hide();
-            document.removeEventListener('keydown', closeTicketFormOnEscape);
-        }
-    }
-    ticketFormPortal.hide = ticketFormPortal._hide = function() {
-        delete ticketFormPortal.dataset.open;
+    ticketFormPortal.addEventListener('showPortal', (e) => {
+        ticketForm.querySelector('[name="home"]').value = e.detail.homeId.toString();
+    })
+    ticketFormPortal.addEventListener('hidePortal', () => {
         ticketForm.reset();
-    }
-
-    document.querySelector('#close-ticket-form').addEventListener('click', () => ticketFormPortal.hide())
-
+    })
 
     ticketForm.addEventListener('submit', (e) => {
         e.preventDefault();
@@ -241,7 +227,7 @@ document.addEventListener("DOMContentLoaded", () => {
             })
             .catch(() => {
                 ticketFormPortal.hide();
-                alert('Произошла какая-то ошибка, с Вами НЕ свяжутся');
+                alert('Произошла какая-то ошибка, заявка не отправлена.');
             })
             .finally(() => {
                 ticketForm.querySelectorAll('button[type="submit"], input').forEach(el => {

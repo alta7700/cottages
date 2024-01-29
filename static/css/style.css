@@ -71,6 +71,8 @@ main {
 }
 
 .button {
+    cursor: pointer;
+    user-select: none;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -78,6 +80,10 @@ main {
     transition-duration: var(--animation-duration);
     border-radius: 50px;
     justify-content: center;
+    white-space: nowrap;
+}
+.button:disabled {
+    cursor: default;
 }
 .button.medium {
     height: 36px;
@@ -95,9 +101,6 @@ main {
     width: 52px;
     padding-inline: 0;
 }
-.button > span {
-    white-space: nowrap;
-}
 .button > svg {
     width: 20px;
     height: 20px;
@@ -108,16 +111,6 @@ main {
     height: 24px;
 }
 
-.button.dark {
-    background-color: var(--color-interface-dark);
-    color: var(--color-text-white);
-}
-.button:disabled {
-    cursor: default;
-}
-.button.dark:disabled {
-    background-color: var(--color-text-medium);
-}
 .button.light {
     background-color: var(--color-interface-white);
     color: var(--color-text-dark);
@@ -125,12 +118,19 @@ main {
 .button.light:disabled {
     color: var(--color-interface-light);
 }
+.button.dark {
+    background-color: var(--color-interface-dark);
+    color: var(--color-text-white);
+}
+.button.dark:disabled {
+    background-color: var(--color-text-medium);
+}
 @media (hover: hover) {
-    .button.dark:hover:not(:disabled) {
-        background-color: var(--color-interface-medium);
-    }
     .button.light:hover:not(:disabled) {
         background-color: var(--color-interface-light);
+    }
+    .button.dark:hover:not(:disabled) {
+        background-color: var(--color-interface-medium);
     }
 }
 
@@ -281,10 +281,10 @@ main {
     display: flex;
     flex-direction: column;
 }
-.close-ticket-form--wrapper {
+.modal-close-wrapper {
     display: contents;
 }
-#close-ticket-form {
+.modal-close-wrapper > .button {
     position: absolute;
     right: -12px;
     top: 0;
@@ -318,13 +318,13 @@ main {
         animation-name: show-portal;
         animation-duration: calc(var(--animation-duration) * 2);
     }
-    .close-ticket-form--wrapper {
+    .modal-close-wrapper {
         display: flex;
         flex-direction: row;
         justify-content: flex-end;
         padding-inline-end: 32px;
     }
-    #close-ticket-form {
+    .modal-close-wrapper > .button {
         position: static;
         transform: none;
     }
@@ -524,5 +524,169 @@ main:has(.homes-list) {
     }
     .home-card--images-cover img {
         border-radius: 0;
+    }
+}
+
+
+.contacts {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    gap: 10px;
+    padding-block: 40px;
+    padding-inline: 40px;
+}
+.contacts-text {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+.contacts-text {
+    gap: 20px;
+}
+.contacts-text--phones-list,
+.contacts-text--mails-list {
+    list-style: disc inside;
+}
+.contacts-map {
+    flex: 1;
+}
+@media (width > 1050px) {
+    .contacts-text {
+        width: 450px;
+    }
+}
+@media (width <= 1050px) {
+    .contacts {
+        flex-direction: column;
+        gap: 48px;
+    }
+}
+@media (width <= 600px) {
+    .contacts {
+        padding-inline: 20px;
+    }
+}
+
+
+
+.home-covers {
+    position: relative;
+    width: 100%;
+    max-height: calc(100dvh - var(--header-height));
+    aspect-ratio: 16/10;
+}
+.home-covers .swiper {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+.home-covers img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.home-covers > h1 {
+    color: var(--color-text-white);
+    margin-block-end: 32px;
+}
+.home-covers-nav {
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+}
+
+
+
+
+
+
+
+
+.home-carousel {
+    max-width: 1250px;
+    width: 100%;
+}
+.home-carousel .swiper[data-carousel] {
+    width: 100%;
+    height: 580px;
+}
+.home-carousel img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.carousel-pagination {
+    display: flex;
+    flex-flow: row nowrap;
+    gap: 8px;
+    width: 100%;
+    position: absolute;
+    bottom: 32px;
+    padding-inline: 32px;
+    z-index: 1;
+}
+.swiper > :is(.carousel-prev, .carousel-next).icon-button {
+    position: absolute;
+    top: 50%;
+    z-index: 1;
+    width: 48px;
+    height: 48px;
+}
+.carousel-prev {
+    transform-origin: top;
+    transform: rotate(180deg) translateY(-50%);
+    left: 10px;
+}
+.carousel-next {
+    transform: translateY(-50%);
+    right: 10px;
+}
+
+.carousel-bullet:not(.dark) {
+    overflow: hidden;
+    min-width: 36px;
+}
+.carousel-bullet:not(.dark) > .text {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    justify-content: flex-start;
+}
+@media (width <= 600px) {
+    .home-carousel .swiper[data-carousel] {
+        height: 280px;
+    }
+    .carousel-pagination {
+        bottom: 16px;
+    }
+    .carousel-prev, .carousel-next,
+    .carousel-bullet > .text {
+        display: none;
+    }
+    .carousel-pagination {
+        justify-content: center;
+    }
+    /* написано так из-за проблем со специфичностью */
+    .carousel-bullet:not(.dark), .carousel-bullet.dark {
+        min-width: 0;
+        padding: 0;
+        width: 8px;
+        height: 8px;
+    }
+    .carousel-bullet.dark {
+        background-color: var(--color-interface-white);
+    }
+    .carousel-bullet:not(.dark) {
+        background-color: color-mix(in srgb, var(--color-interface-white), transparent);
+    }
+    .swiper[data-carousel-thumb] {
+        margin-block-end: 16px;
+    }
+    .swiper[data-carousel-thumb] .swiper-slide {
+        width: fit-content;
     }
 }

@@ -10,7 +10,7 @@
     document.querySelectorAll('.home-card').forEach(card => {
         card.querySelector('.home-card--book-btn-wrapper button')?.addEventListener('click', e => {
             e.preventDefault();
-            ticketFormPortal.show(card.dataset.homeId)
+            ticketFormPortal.show({ homeId: card.dataset.homeId });
         })
     });
 })();

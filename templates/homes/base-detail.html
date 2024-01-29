@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static components %}
+
+{% block content %}
+    {% include 'homes/home-covers.html' %}
+    
+    {% for home in homes %}
+        {% include 'components/carousel.html' with carousel=home.carousel.all %}
+    {% endfor %}
+{% endblock %}
+{% block portals %}
+    {% include 'components/modal.html' with content='forms/ticket-form.html' id='ticket-form-portal' %}
+{% endblock %}
+
+{% block lib_styles %}
+    {{ block.super }}
+    <link href="https://cdn.jsdelivr.net/npm/swiper@11.0.5/swiper-bundle.min.css" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/air-datepicker@3.4.0/air-datepicker.min.css" rel="stylesheet"/>
+{% endblock %}
+
+{% block lib_scripts %}
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11.0.5/swiper-bundle.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/air-datepicker@3.4.0/air-datepicker.min.js"></script>
+{% endblock %}
+{% block extra_script %}
+    {{ block.super }}
+    <script src="{% static 'js/form.js' %}"></script>
+    <script src="{% static 'js/details.js' %}"></script>
+{#    {% button text='Забронировать' size='l' id='open-ticket-form' %}#}
+{#    <script>#}
+{#        document.querySelector('#open-ticket-form').addEventListener('click', () => ticketFormPortal.show('1'))#}
+{#    </script>#}
+{% endblock %}

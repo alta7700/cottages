@@ -2,6 +2,9 @@ from django.views.generic import TemplateView, View
 from django.views.generic.edit import FormMixin
 from django.urls import reverse
 from django.http.response import HttpResponse, JsonResponse, HttpResponseRedirect
+from django.utils.safestring import mark_safe
+from django.conf import settings
+from phonenumbers import format_number, PhoneNumberFormat
 
 from .forms import TicketForm
 from .service import HomeService
@@ -27,7 +30,7 @@ class HomesIndexView(BaseHomeDetailsView):
 
 
 class HomeDetailsView(BaseHomeDetailsView):
-    template_name = 'homes/home_details.html'
+    template_name = 'homes/details.html'
 
     def get_context_data(self, slug, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -71,3 +74,15 @@ class CreateTicketView(FormMixin, View):
             return HttpResponse("OK", status=200)
         else:
             return JsonResponse({"errors": list(form.errors.keys())}, status=400)
+
+
+class ContactsView(TemplateView):
+    extra_context = {
+        'map': mark_safe(settings.GENERAL_MAP),
+        'phones': [{
+            'e164': format_number(phone, PhoneNumberFormat.E164),
+            'display': format_number(phone, PhoneNumberFormat.INTERNATIONAL),
+        } for phone in settings.ORGANIZATION_PHONES],
+        'mails': settings.ORGANIZATION_MAILS,
+    }
+    template_name = 'contacts.html'

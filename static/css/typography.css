@@ -64,3 +64,15 @@ p.large, .text.large {
         letter-spacing: -0.01em;
     }
 }
+.color-dark {
+    color: var(--color-text-dark);
+}
+.color-medium {
+    color: var(--color-text-medium);
+}
+.color-light {
+    color: var(--color-text-light);
+}
+.color-white {
+    color: var(--color-text-white);
+}

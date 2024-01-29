@@ -1,0 +1,11 @@
+{% load components %}
+
+<div id="{{ id }}" class="portal">
+    <div class="overlay"></div>
+    <div class="modal">
+        <div class="modal-close-wrapper">
+            {% button icon='close' color='light' %}
+        </div>
+        {% include content %}
+    </div>
+</div>

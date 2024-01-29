@@ -109,5 +109,4 @@ class YaMapScriptParser(SimpleTagParser):
     def set_attr(self, name, value):
         if name == 'src':
             value = self.set_default_query_params(value, {'width': '100%25', 'height': '400'}, required=True)
-            print(value)
         super().set_attr(name, value)
