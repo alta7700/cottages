@@ -62,14 +62,14 @@ class HomeAdmin(admin.ModelAdmin):
     def get_form(self, request, obj=None, change=False, **kwargs):
         form = super().get_form(request=request, obj=obj, change=change, **kwargs)
         form.base_fields['ya_map'].validators.append(parsers.YaMapScriptParser.validate)
-        form.base_fields['video'].validators.append(parsers.YTIframeParser.validate)
+        # form.base_fields['video'].validators.append(parsers.YTIframeParser.validate)
         return form
 
     def save_form(self, request, form, change):
         if 'ya_map' in form.changed_data:
             form.instance.ya_map = YaMapScriptParser.transform(form.cleaned_data['ya_map'])
-        if 'video' in form.changed_data:
-            form.instance.video = YTIframeParser.transform(form.cleaned_data['video'])
+        # if 'video' in form.changed_data:
+        #     form.instance.video = YTIframeParser.transform(form.cleaned_data['video'])
         return super().save_form(request=request, form=form, change=change)
 
 

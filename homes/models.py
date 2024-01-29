@@ -32,7 +32,7 @@ class Home(models.Model):
     long_description = RichTextField(blank=True, default='', verbose_name='Полное описание')
 
     ya_map = models.TextField(blank=True, default='', verbose_name='Код яндекс карт')
-    video = models.TextField(blank=True, default='', verbose_name='Код на видео Youtube')
+    video = models.TextField(blank=True, default='', verbose_name='Ссылка видео Youtube')
 
     conv_wifi = models.BooleanField(default=False, verbose_name='Wi-Fi')
     conv_minibar = models.BooleanField(default=False, verbose_name='Минибар')
@@ -59,6 +59,10 @@ class Home(models.Model):
             for field in self.__class__._meta.local_fields
             if field.name.startswith('conv_') and getattr(self, field.name)
         }
+
+    @property
+    def short_description_parts(self):
+        return self.short_description.split('\n')
 
 
 def carousel_image_path(instance: "HomeCarouselImage", *_):

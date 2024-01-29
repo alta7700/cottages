@@ -13,9 +13,14 @@
     --color-text-error: rgba(237 28 36 / 1);
 
     --header-height: 60px;
-
+    --page-inline-offset: 40px;
     --animation-duration: 100ms;
 
+}
+@media (width <= 600px) {
+    :root {
+        --page-inline-offset: 20px;
+    }
 }
 body {
     font-family: 'Inter', sans-serif;
@@ -27,7 +32,7 @@ body {
 }
 body:has(.portal[data-open]) {
     overflow: hidden;
-    margin-inline-end: 17px;
+    margin-inline-end: 18px;
 }
 main {
     flex: 1;
@@ -37,7 +42,7 @@ main {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    padding-inline: 40px;
+    padding-inline: var(--page-inline-offset);
     align-items: center;
     height: var(--header-height);
 }
@@ -52,16 +57,13 @@ main {
 .footer {
     display: flex;
     flex-direction: row-reverse;
-    padding-inline: 40px;
+    padding-inline: var(--page-inline-offset);
     padding-block: 24px;
     color: var(--color-text-light);
     background-color: var(--color-interface-medium);
 }
 
 @media (width <= 600px) {
-    .header {
-        padding-inline: 20px;
-    }
     .navbar {
         gap: 16px;
     }
@@ -252,6 +254,21 @@ main {
     }
 }
 
+.address-with-icon {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    color: var(--color-text-medium);
+    align-items: center;
+}
+.address-with-icon > svg {
+    width: 18px;
+    height: 18px;
+}
+
+#portals {
+    z-index: 1000;
+}
 .portal {
     position: fixed;
     inset: 0;
@@ -377,7 +394,7 @@ main {
 
 .homes-list {
     padding-block: 20px;
-    padding-inline: 20px;
+    padding-inline: var(--page-inline-offset);
     display: grid;
     gap: 24px;
     justify-items: center;
@@ -405,16 +422,8 @@ main:has(.homes-list) {
 .home-card--about {
     color: var(--color-text-dark);
 }
-.home-card--about-address {
-    display: flex;
-    flex-direction: row;
-    gap: 8px;
+.home-card--about .address-with-icon {
     margin-block-start: 8px;
-    color: var(--color-text-medium);
-}
-.home-card--about-address svg {
-    width: 18px;
-    height: 18px;
 }
 .home-card--about-pluses {
     margin-block-start: 20px;
@@ -431,7 +440,7 @@ main:has(.homes-list) {
     color: var(--color-text-dark);
 }
 @media (width > 1050px) {
-    .home-list {
+    .homes-list {
         padding-block: 40px;
         grid-template-columns: 1fr;
     }
@@ -534,7 +543,7 @@ main:has(.homes-list) {
     width: 100%;
     gap: 10px;
     padding-block: 40px;
-    padding-inline: 40px;
+    padding-inline: var(--page-inline-offset);
 }
 .contacts-text {
     display: flex;
@@ -562,46 +571,138 @@ main:has(.homes-list) {
         gap: 48px;
     }
 }
-@media (width <= 600px) {
-    .contacts {
-        padding-inline: 20px;
-    }
-}
-
-
 
 .home-covers {
-    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
     width: 100%;
     max-height: calc(100dvh - var(--header-height));
-    aspect-ratio: 16/10;
 }
 .home-covers .swiper {
-    position: absolute;
     width: 100%;
     height: 100%;
-    top: 0;
-    left: 0;
-    z-index: -1;
+    aspect-ratio: 4/3;
 }
 .home-covers img {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
-.home-covers > h1 {
-    color: var(--color-text-white);
-    margin-block-end: 32px;
-}
-.home-covers-nav {
+.home-covers-head {
     display: flex;
-    flex-direction: row;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    gap: 50px;
+    row-gap: 24px;
+    padding-inline: var(--page-inline-offset);
+}
+.home-covers-prev, .home-covers-next {
+    position: absolute;
+    top: 50%;
+    z-index: 1;
+}
+.home-covers-prev {
+    left: 20px;
+    transform: rotateY(180deg) translateY(-50%);
+}
+.home-covers-next {
+    right: 20px;
+    transform: translateY(-50%);
+}
+.home-covers-pages {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+}
+@media (width <= 850px) {
+    .home-covers-prev, .home-covers-next {
+        display: none;
+    }
+}
+
+
+.home-detail {
+    display: flex;
+    flex-direction: column;
+    padding-block: 40px;
+    padding-inline: var(--page-inline-offset);
+    gap: 64px;
+    align-items: center;
+    animation-name: show-home-details;
+    animation-duration: var(--animation-duration);
+    background: var(--color-background-secondary);
+}
+@keyframes show-home-details {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+.home-info {
+    display: grid;
+    grid-template-areas:
+            'a _'
+            'm d';
+    grid-template-columns: min(45%, 100%) min(50%, 550px);
+    row-gap: 30px;
+    width: 100%;
+    justify-content: space-between;
+}
+.home-info-about {
+    grid-area: a;
+}
+.home-info-main {
+    grid-area: m;
+    display: flex;
+    flex-flow: column nowrap;
     gap: 12px;
 }
-
-
-
-
+.home-info-description {
+    display: block;
+    grid-area: d;
+}
+.home-info-description > :is(p, .text):not(:last-child) {
+    margin-block-end: 12px;
+}
+.home-info-main-buttons {
+    display: flex;
+    flex-flow: row wrap;
+    gap: 10px;
+    align-items: flex-start;
+}
+.home-location {
+    padding: 40px;
+}
+.home-location > .headline-1 {
+    display: inline-block;
+    margin-block-end: 24px;
+}
+.home-location-wrapper {
+    width: 100%;
+}
+@media (width <= 850px) {
+    .home-detail {
+        gap: 48px;
+    }
+    .home-info {
+        grid-template-areas: 'a' 'm' 'd';
+        grid-template-columns: 1fr;
+        row-gap: 16px;
+    }
+    .home-info-name {
+        margin-block-start: 4px;
+    }
+    .home-location {
+        padding-inline: 20px;
+    }
+}
 
 
 
@@ -612,7 +713,8 @@ main:has(.homes-list) {
 }
 .home-carousel .swiper[data-carousel] {
     width: 100%;
-    height: 580px;
+    aspect-ratio: 16/9;
+    max-height: 580px;
 }
 .home-carousel img {
     width: 100%;
@@ -656,9 +758,15 @@ main:has(.homes-list) {
     overflow: hidden;
     justify-content: flex-start;
 }
-@media (width <= 600px) {
+@media (width > 900px) {
+    .home-carousel .swiper[data-carousel-thumb] {
+        height: 0;
+    }
+}
+@media (width <= 900px) {
     .home-carousel .swiper[data-carousel] {
-        height: 280px;
+        height: unset;
+        min-height: 280px;
     }
     .carousel-pagination {
         bottom: 16px;
@@ -670,7 +778,7 @@ main:has(.homes-list) {
     .carousel-pagination {
         justify-content: center;
     }
-    /* написано так из-за проблем со специфичностью */
+    /* написано так из-за проблем со специфичностью ".dark" */
     .carousel-bullet:not(.dark), .carousel-bullet.dark {
         min-width: 0;
         padding: 0;

@@ -5,9 +5,8 @@
     <div class="homes-list">
         {% for home in homes %}
             {% include 'homes/../components/card.html' with home=home %}
-            {% include 'homes/../components/card.html' with home=home %}
-            {% include 'homes/../components/card.html' with home=home %}
-            {% include 'homes/../components/card.html' with home=home %}
+        {% endfor %}
+        {% for home in homes %}
             {% include 'homes/../components/card.html' with home=home %}
         {% endfor %}
     </div>

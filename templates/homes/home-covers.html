@@ -1,19 +1,19 @@
 {% load components %}
 <div class="home-covers">
-    <h1>Аренда коттеджей в центре Краснодара</h1>
-    {% button text='Забронировать' size='l' color='light' extra_classes='home-covers--book-btn' %}
-    <div class="swiper">
+    <div class="home-covers-head">
+        <h1>Аренда коттеджей в центре Краснодара</h1>
+        {% button text='Забронировать' size='l' color='dark' data_book_btn=true %}
+    </div>
+    <div class="swiper invisible">
         <div class="swiper-wrapper">
             {% for home in homes %}
-                <div class="swiper-slide" data-home-id="{{ home.id }}">
+                <div class="swiper-slide" data-home-id="{{ home.id }}" data-home-name="{{ home.name }}">
                     <img src="{{ home.cover.url }}" alt loading="lazy"/>
                 </div>
             {% endfor %}
         </div>
-    </div>
-    <div class="home-covers-nav">
-        {% button icon='arrow' size='l' extra_classes='home-covers-prev' color='light' %}
-        <div class="home-covers-pages color-white"></div>
-        {% button icon='arrow' size='l' extra_classes='home-covers-next' color='light' %}
+        {% button icon='arrow' size='l' extra_classes='home-covers-prev mobile-hidden' color='light' %}
+        <div class="home-covers-pages">{% button text='-' size='m' color='light' %}</div>
+        {% button icon='arrow' size='l' extra_classes='home-covers-next mobile-hidden' color='light' %}
     </div>
 </div>

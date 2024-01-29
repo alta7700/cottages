@@ -3,10 +3,43 @@
 
 {% block content %}
     {% include 'homes/home-covers.html' %}
-    
-    {% for home in homes %}
-        {% include 'components/carousel.html' with carousel=home.carousel.all %}
-    {% endfor %}
+    <div class="home-details">
+        {% for home in homes %}
+            <div class="home-details-item">
+                <div class="home-detail">
+                    <div class="home-info">
+                        <p class="home-info-about color-medium">О доме</p>
+                        <div class="home-info-main">
+                            <h1>{{ home.name }}</h1>
+                            {% conveniences home=home %}
+                            {% include 'components/address.html' with home=home %}
+                            <span class="headline-3">от {{ home.cost_per_day }} ₽/сутки</span>
+                            <div class="home-info-main-buttons">
+                                {% if home.ya_map %}
+                                    {% button text='Показать на карте' icon='map' size='l' color='light' data_show_on_map=true extra_classes='mobile-hidden' %}
+                                    {% button text='Показать на карте' icon='map' size='m' color='light' data_show_on_map=true extra_classes='desktop-hidden' %}
+                                {% endif %}
+                                {% if home.video %}
+                                    {% button tag='a' text='Видео-тур' icon='play' size='l' color='light' data_show_video_tour=true extra_classes='mobile-hidden' %}
+                                    {% button tag='a' text='Видео-тур' icon='play' size='m' color='light' data_show_video_tour=true extra_classes='desktop-hidden' %}
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="home-info-description">
+                            {% for part in home.short_description_parts %}
+                                <p class="large">{{ part }}</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% include 'components/carousel.html' with carousel=home.carousel.all %}
+                </div>
+                <div class="home-location">
+                    <span class="headline-1">Коттедж на карте</span>
+                    <div class="home-location-wrapper">{{ home.ya_map|safe }}</div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
 {% endblock %}
 {% block portals %}
     {% include 'components/modal.html' with content='forms/ticket-form.html' id='ticket-form-portal' %}

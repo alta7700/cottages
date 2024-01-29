@@ -1,1 +1,7 @@
 {% extends 'homes/base-detail.html' %}
+{% block extra_script %}
+    <script>
+        window.initialHomeId = {{ initial_home.id }}
+    </script>
+    {{ block.super }}
+{% endblock %}

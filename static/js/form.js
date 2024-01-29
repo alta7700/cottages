@@ -140,7 +140,7 @@ document.addEventListener("DOMContentLoaded", () => {
     (function () {
         const inputEl = ticketForm.querySelector('.input[name="dtrange"]');
         inputEl.parentElement.querySelector(".input-icon-helper")?.addEventListener('click', () => inputEl.focus())
-        new AirDatepicker(inputEl, {
+        const datepicker = new AirDatepicker(inputEl, {
             range: true,
             minDate: new Date(),
             dateFormat: "dd.MM.yyyy",
@@ -183,6 +183,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 $pointer.style.display = 'none';
             },
         })
+        inputEl.resetPicker = () => {
+            datepicker.clear()
+        }
     })();
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -238,5 +241,6 @@ document.addEventListener("DOMContentLoaded", () => {
     ticketForm.addEventListener('reset', (e) => {
         // чтобы сбрасывалось или накладывалось disable на кнопки плюса и минуса у инпута
         setTimeout(() => ticketForm.querySelector('.input[name="guest_count"]').setValue(), 50);
+        ticketForm.querySelector('.input[name="dtrange"]').resetPicker();
     })
 });

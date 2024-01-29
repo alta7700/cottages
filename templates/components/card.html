@@ -13,10 +13,7 @@
     </div>
     <div class="home-card--about">
         <h3>{{ home.name }}</h3>
-        <div class="home-card--about-address">
-            {% include 'svg/location.html' %}
-            <span class="text">{{ home.address }}</span>
-        </div>
+        {% include 'components/address.html' with home=home %}
         <ul class="home-card--about-pluses">
             {% with max_list_count=6 neg_max_list_count='-6' %}
                 {% for image in home.carousel.all %}

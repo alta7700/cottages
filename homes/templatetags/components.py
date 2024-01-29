@@ -18,7 +18,8 @@ def button(
         trailing_icon: str = None,
         extra_classes: str = None,
         type: str = 'button',
-        id: str = None,
+        tag: str = 'button',
+        **attrs,
 ):
     leading_icon = leading_icon or icon
     assert text or leading_icon
@@ -31,7 +32,11 @@ def button(
         'icon_button': not text,
         'extra_classes': extra_classes,
         'type': type,
-        'id': id,
+        'tag': tag,
+        'attrs': {
+            (f'data-{k[5:].replace('_', '-')}' if k.startswith('data_') else k): v
+            for k, v in attrs.items()
+        },
     }
 
 

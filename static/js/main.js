@@ -14,9 +14,11 @@ document.querySelectorAll('#portals .portal').forEach(portal => {
     if (portal.dataset.disableHideOnEscape === undefined) {
         portal.addEventListener('showPortal', () => {
             function hidePortalOnEscape(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                if (e.key === 'Escape') portal.hide({ escape: true });
+                if (e.key === 'Escape') {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    portal.hide({escape: true})
+                }
             }
             document.addEventListener('keydown', hidePortalOnEscape)
             portal.addEventListener('hidePortal', () => {
