@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  app:
+    image: makarovhouse/site:${APP_VERSION}
+    container_name: app
+    restart: always
+    volumes:
+      - ./app/staticfiles:/usr/src/app/staticfiles
+      - ./app/media:/usr/src/app/media
+      - ./app/db.sqlite3:/usr/src/app/db.sqlite3
+    env_file: ./app/.env
+    environment:
+      - ALLOWED_HOSTS=${DOMAIN},0.0.0.0
+      - CSRF_TRUSTED_ORIGINS=https://${DOMAIN}
+      - PORT=${APP_PORT}
+
+  nginx:
+    image: nginx:1.25.3-alpine
+    container_name: nginx
+    restart: always
+    volumes:
+      - ./nginx:/etc/nginx/templates:ro
+      - ./security/dhparam.pem:/etc/nginx/dhparam.pem:ro
+      - ./security/certbot/www:/var/www/certbot:ro
+      - ./security/certbot/conf:/etc/nginx/ssl/:ro
+      - ./data/staticfiles:/www/staticfiles:ro
+      - ./data/media:/www/media:ro
+    environment:
+      - DOMAIN=${DOMAIN}
+      - APP_PORT=${APP_PORT}
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - app
+
+  certbot:
+    image: certbot/certbot:latest
+    volumes:
+      - ./security/certbot/www/:/var/www/certbot/:rw
+      - ./security/certbot/conf/:/etc/letsencrypt/:rw

@@ -4,7 +4,6 @@ from django.db import models
 from django.conf import settings
 from django.core.validators import MinLengthValidator
 from phonenumber_field.modelfields import PhoneNumberField
-from ckeditor.fields import RichTextField
 
 
 from .validators import validate_16x9_jpeg
@@ -29,7 +28,6 @@ class Home(models.Model):
     show_on_site = models.BooleanField(default=False, verbose_name='Показывать на сайте')
 
     short_description = models.TextField(blank=True, default='', verbose_name='Краткое описание')
-    long_description = RichTextField(blank=True, default='', verbose_name='Полное описание')
 
     ya_map = models.TextField(blank=True, default='', verbose_name='Код яндекс карт')
     video = models.TextField(blank=True, default='', verbose_name='Ссылка видео Youtube')

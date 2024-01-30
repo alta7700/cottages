@@ -29,7 +29,7 @@ class HomeAdmin(admin.ModelAdmin):
             'Описание',
             {
                 'classes': ['collapse'],
-                'fields': ('short_description', 'long_description'),
+                'fields': ('short_description',),
             }
         ),
         (

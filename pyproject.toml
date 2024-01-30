@@ -9,8 +9,7 @@ readme = "README.md"
 python = "^3.12"
 django = "5.0.1"
 pillow = "10.2.0"
-python-dotenv = "1.0.0"
-django-ckeditor = "6.7.0"
+python-dotenv = "1.0.1"
 django-phonenumber-field = {version = "7.3.0", extras = ["phonenumbers"]}
 
 
