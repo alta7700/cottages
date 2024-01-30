@@ -43,6 +43,9 @@ img, svg {
 	height: auto;
 	display: block;
 }
+svg {
+	fill: currentColor;
+}
 
 address {
   font-style: normal;

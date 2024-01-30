@@ -83,6 +83,7 @@ class ContactsView(TemplateView):
             'e164': format_number(phone, PhoneNumberFormat.E164),
             'display': format_number(phone, PhoneNumberFormat.INTERNATIONAL),
         } for phone in settings.ORGANIZATION_PHONES],
+        'instagram': settings.ORGANIZATION_INSTAGRAM,
         'mails': settings.ORGANIZATION_MAILS,
     }
     template_name = 'contacts.html'

@@ -217,9 +217,14 @@ document.addEventListener("DOMContentLoaded", () => {
             .then(res => {
                 if (res.status === 200) {
                     ticketFormPortal.hide();
-                    alert('С Вами свяжутся');
+                    document.showNotification(
+                        'Заявка принята, ожидайте ответа от менеджера.<br/>Cкоро с вами свяжутся'
+                    )
+                } else if (res.status === 400) {
+                    return res.json()
+                } else {
+                    throw Error();
                 }
-                if (res.status === 400) return res.json()
             })
             .then(data => {
                 if (data?.errors) {
@@ -228,9 +233,12 @@ document.addEventListener("DOMContentLoaded", () => {
                     })
                 }
             })
-            .catch(() => {
+            .catch((e) => {
                 ticketFormPortal.hide();
-                alert('Произошла какая-то ошибка, заявка не отправлена.');
+                document.showNotification(
+                    'Произошла непредвиденная ошибка, попробуйте повторить позже',
+                    { autoClose: false, status: 'error' },
+                )
             })
             .finally(() => {
                 ticketForm.querySelectorAll('button[type="submit"], input').forEach(el => {

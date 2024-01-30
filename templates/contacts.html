@@ -4,28 +4,28 @@
 <div class="contacts">
     <div class="contacts-text">
         <h1>Контакты</h1>
-        <div class="contacts-text--phones">
+        <div class="contacts-text--item">
             <p class="large">Телефоны для связи</p>
-            {% for phone in phones %}
-                <ul class="contacts-text--phones-list color-medium">
+            <ul class="contacts-text--item-list color-medium">
+                {% for phone in phones %}
                     <li><a class="text large" href="tel:{{ phone.e164 }}">{{ phone.display }}</a></li>
-                </ul>
-            {% endfor %}
+                {% endfor %}
+            </ul>
         </div>
         {% if instagram %}
-            <div class="contacts-text--instagram">
+            <div class="contacts-text--item">
                 <p class="large">Instagram</p>
-                <p class="large color-medium">{{ instagram }}</p>
+                <a class="large color-medium" href="https://instagram.com/{{ instagram }}">@{{ instagram }}</a>
             </div>
         {% endif %}
         {% if mails %}
-            <div class="contacts-text--mails">
+            <div class="contacts-text--item">
                 <p class="large">Почта</p>
-                {% for mail in mails %}
-                    <ul class="contacts-text--mails-list color-medium">
+                <ul class="contacts-text--item-list color-medium">
+                    {% for mail in mails %}
                         <li><a class="text large" href="mailto:{{ mail }}">{{ mail }}</a></li>
-                    </ul>
-                {% endfor %}
+                    {% endfor %}
+                </ul>
             </div>
         {% endif %}
     </div>

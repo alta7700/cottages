@@ -1,11 +1,16 @@
 :root {
+    color-scheme: only light;
+
     --color-background-main: rgba(255 255 255 / 1);
     --color-background-secondary: rgba(249 245 242 / 1);
     --color-interface-dark: rgba(41 37 33 / 1);
     --color-interface-medium: rgba(140 140 140 / 1);
     --color-interface-light: rgba(229 229 229 / 1);
     --color-interface-white: rgba(255 255 255 / 1);
+    --color-interface-success: rgba(86 108 80 / 1);
+    --color-interface-success-background: rgba(213 235 206 / 1);
     --color-interface-error: rgba(237 28 36 / 1);
+    --color-interface-error-background: rgba(227 192 186 / 1);
     --color-text-dark: rgba(41 37 33 / 1);
     --color-text-medium: rgba(140 140 140 / 1);
     --color-text-light: rgba(193 180 168 / 1);
@@ -15,6 +20,9 @@
     --header-height: 60px;
     --page-inline-offset: 40px;
     --animation-duration: 100ms;
+
+    --portals-z-index: 1000;
+    --notifications-z-index: 1000;
 
 }
 @media (width <= 600px) {
@@ -266,8 +274,79 @@ main {
     height: 18px;
 }
 
+#notifications {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    width: 360px;
+    z-index: var(--notifications-z-index);
+    display: flex;
+    flex-flow: column nowrap;
+}
+.notification[data-status="success"] {
+    --_notification-color: var(--color-interface-success);
+    --_notification-bgcolor: var(--color-interface-success-background);
+}
+.notification[data-status="error"] {
+    --_notification-color: var(--color-interface-error);
+    --_notification-bgcolor: var(--color-interface-error-background);
+}
+.notification {
+    width: 100%;
+    display: flex;
+    flex-flow: row nowrap;
+    padding: 12px 20px;
+    align-items: center;
+    background: var(--_notification-bgcolor);
+    border-radius: 12px;
+    justify-content: space-between;
+    animation-name: show-notification;
+    animation-duration: var(--animation-duration);
+    filter: drop-shadow(0 4px 16px rgba(0, 0, 0, 0.1));
+}
+@keyframes show-notification {
+    from {transform: translateX(-110%)}
+    to {transform: translateX(0)}
+}
+.notification-info {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    gap: 20px;
+}
+.notification-icon {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    color: var(--_notification-color);
+}
+.notification-info > p {
+    flex-shrink: 1;
+}
+.notification-close-wrapper > .button {
+    color: var(--color-interface-dark);
+    background: transparent;
+}
+@media (hover: hover) {
+    .notification-close-wrapper > .button:hover {
+        background: color-mix(in srgb, var(--color-interface-dark) 20%, transparent)
+    }
+}
+
+@media (width <= 400px) {
+    #notifications {
+        left: 0;
+        padding-inline: 20px;
+        width: 100%;
+    }
+    .notification {
+        border-radius: 8px;
+        padding: 10px;
+    }
+}
+
 #portals {
-    z-index: 1000;
+    z-index: var(--portals-z-index);
 }
 .portal {
     position: fixed;
@@ -553,9 +632,16 @@ main:has(.homes-list) {
 .contacts-text {
     gap: 20px;
 }
-.contacts-text--phones-list,
-.contacts-text--mails-list {
+.contacts-text--item {
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 12px;
+}
+.contacts-text--item-list {
     list-style: disc inside;
+}
+.contacts-text--item-list li:not(:last-child)  {
+    margin-block-end: 8px;
 }
 .contacts-map {
     flex: 1;
