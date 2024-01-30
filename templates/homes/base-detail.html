@@ -20,8 +20,8 @@
                                     {% button text='Показать на карте' icon='map' size='m' color='light' data_show_on_map=true extra_classes='desktop-hidden' %}
                                 {% endif %}
                                 {% if home.video %}
-                                    {% button tag='a' text='Видео-тур' icon='play' size='l' color='light' data_show_video_tour=true extra_classes='mobile-hidden' %}
-                                    {% button tag='a' text='Видео-тур' icon='play' size='m' color='light' data_show_video_tour=true extra_classes='desktop-hidden' %}
+                                    {% button tag='a' href=home.video text='Видео-тур' icon='play' size='l' color='light' data_show_video_tour=true extra_classes='mobile-hidden' %}
+                                    {% button tag='a' href=home.video text='Видео-тур' icon='play' size='m' color='light' data_show_video_tour=true extra_classes='desktop-hidden' %}
                                 {% endif %}
                             </div>
                         </div>
@@ -33,10 +33,12 @@
                     </div>
                     {% include 'components/carousel.html' with carousel=home.carousel.all %}
                 </div>
-                <div class="home-location">
-                    <span class="headline-1">Коттедж на карте</span>
-                    <div class="home-location-wrapper">{{ home.ya_map|safe }}</div>
-                </div>
+                {% if home.ya_map %}
+                    <div class="home-location">
+                        <span class="headline-1">Коттедж на карте</span>
+                        <div class="home-location-wrapper">{{ home.ya_map|safe }}</div>
+                    </div>
+                {% endif %}
             </div>
         {% endfor %}
     </div>
@@ -59,8 +61,4 @@
     {{ block.super }}
     <script src="{% static 'js/form.js' %}"></script>
     <script src="{% static 'js/details.js' %}"></script>
-{#    {% button text='Забронировать' size='l' id='open-ticket-form' %}#}
-{#    <script>#}
-{#        document.querySelector('#open-ticket-form').addEventListener('click', () => ticketFormPortal.show('1'))#}
-{#    </script>#}
 {% endblock %}

@@ -7,6 +7,7 @@ document.querySelectorAll('.swiper[data-carousel]').forEach(el => {
     })
     const swiper = new Swiper(el, {
         a11y: false,
+        lazy: true,
         pagination: {
             el: '.carousel-pagination',
             clickable: true,
@@ -58,10 +59,11 @@ document.querySelectorAll('.swiper[data-carousel]').forEach(el => {
 
     const swiperEl = coversEl.querySelector('.swiper');
     const initialSlide = Array.from(swiperEl.querySelectorAll('.swiper-slide'))
-        .findIndex(el => el.dataset.homeId === window.initialHomeId.toString())
+        .findIndex(el => el.dataset.homeId === window.initialHomeId)
     const swiper = new Swiper(swiperEl, {
         a11y: false,
         initialSlide: initialSlide === -1 ? 0 : initialSlide,
+        lazy: true,
         navigation: {
             prevEl: coversEl.querySelector('.home-covers-prev'),
             nextEl: coversEl.querySelector('.home-covers-next'),

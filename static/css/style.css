@@ -622,6 +622,11 @@ main:has(.homes-list) {
         display: none;
     }
 }
+@media (width <= 600px) {
+    .home-covers-pages {
+        bottom: 10px;
+    }
+}
 
 
 .home-detail {
@@ -653,6 +658,7 @@ main:has(.homes-list) {
     grid-template-columns: min(45%, 100%) min(50%, 550px);
     row-gap: 30px;
     width: 100%;
+    max-width: 1300px;
     justify-content: space-between;
 }
 .home-info-about {
@@ -678,7 +684,10 @@ main:has(.homes-list) {
     align-items: flex-start;
 }
 .home-location {
+    max-width: 1400px;
+    width: 100%;
     padding: 40px;
+    margin: auto;
 }
 .home-location > .headline-1 {
     display: inline-block;
@@ -703,8 +712,6 @@ main:has(.homes-list) {
         padding-inline: 20px;
     }
 }
-
-
 
 
 .home-carousel {

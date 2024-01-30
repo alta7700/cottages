@@ -9,6 +9,7 @@
             {% for home in homes %}
                 <div class="swiper-slide" data-home-id="{{ home.id }}" data-home-name="{{ home.name }}">
                     <img src="{{ home.cover.url }}" alt loading="lazy"/>
+                    <div class="swiper-lazy-preloader"></div>
                 </div>
             {% endfor %}
         </div>

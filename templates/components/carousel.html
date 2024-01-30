@@ -17,6 +17,7 @@
             {% for image in carousel %}
                 <div class="swiper-slide" data-name="{{ image.name }}">
                     <img src="{{ image.url }}" alt loading="lazy" />
+                    <div class="swiper-lazy-preloader"></div>
                 </div>
             {% endfor %}
         </div>
