@@ -1,6 +1,6 @@
 *.env
 !example.env
 /app/db.sqlite3
-/media
-/staticfiles
+/app/media
+/app/staticfiles
 .venv

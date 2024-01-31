@@ -6,10 +6,10 @@ services:
     container_name: app
     restart: always
     volumes:
-      - ./app/staticfiles:/usr/src/app/staticfiles
-      - ./app/media:/usr/src/app/media
-      - ./app/db.sqlite3:/usr/src/app/db.sqlite3
-    env_file: ./app/.env
+      - ./app/staticfiles:/src/app/staticfiles:rw
+      - ./app/media:/src/app/media:rw
+      - ./app/db.sqlite3:/src/app/db.sqlite3:rw
+    env_file: app/example.env
     environment:
       - ALLOWED_HOSTS=${DOMAIN},0.0.0.0
       - CSRF_TRUSTED_ORIGINS=https://${DOMAIN}
@@ -20,12 +20,12 @@ services:
     container_name: nginx
     restart: always
     volumes:
-      - ./nginx:/etc/nginx/templates:ro
-      - ./security/dhparam.pem:/etc/nginx/dhparam.pem:ro
-      - ./security/certbot/www:/var/www/certbot:ro
-      - ./security/certbot/conf:/etc/nginx/ssl/:ro
-      - ./data/staticfiles:/www/staticfiles:ro
-      - ./data/media:/www/media:ro
+      - ./network/nginx:/etc/nginx/templates:ro
+      - ./network/dhparam.pem:/etc/nginx/dhparam.pem:ro
+      - ./network/certbot/www:/var/www/certbot:ro
+      - ./network/certbot/conf:/etc/nginx/ssl/:ro
+      - ./app/staticfiles:/www/staticfiles:ro
+      - ./app/media:/www/media:ro
     environment:
       - DOMAIN=${DOMAIN}
       - APP_PORT=${APP_PORT}
@@ -38,5 +38,5 @@ services:
   certbot:
     image: certbot/certbot:latest
     volumes:
-      - ./security/certbot/www/:/var/www/certbot/:rw
-      - ./security/certbot/conf/:/etc/letsencrypt/:rw
+      - ./network/certbot/www/:/var/www/certbot/:rw
+      - ./network/certbot/conf/:/etc/letsencrypt/:rw
