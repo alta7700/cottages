@@ -25,6 +25,8 @@ server {
     ssl_ciphers HIGH:!aNULL:!MD5;
     ssl_dhparam /etc/nginx/dhparam.pem;
 
+    client_max_body_size 100M;
+
     location /static/ {
         expires 7d;
         autoindex on;

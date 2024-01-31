@@ -12,7 +12,8 @@ from .service import HomeService
 
 class BaseHomeDetailsView(TemplateView):
     extra_context = {
-        'title': 'Аренда котеджей в Краснодаре',
+        'title': settings.ORGANIZATION_TOPIC,
+        'topic': settings.ORGANIZATION_TOPIC
     }
     ticket_form = TicketForm()
 
@@ -37,7 +38,7 @@ class HomeDetailsView(BaseHomeDetailsView):
         for home in context['homes']:
             if home.slug == slug:
                 context['initial_home'] = home
-                context['title'] = home.name
+                context['title'] = f'{settings.ORGANIZATION_TOPIC}: {home.name}'
         return context
 
     def get(self, request, *args, **kwargs):
@@ -50,7 +51,7 @@ class HomeDetailsView(BaseHomeDetailsView):
 class AllHomesView(TemplateView):
     template_name = 'homes/all_homes.html'
     extra_context = {
-        'title': 'Аренда котеджей в Краснодаре',
+        'title': settings.ORGANIZATION_TOPIC + ". Все дома",
     }
 
     def get_context_data(self, **kwargs):

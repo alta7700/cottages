@@ -769,6 +769,9 @@ main:has(.homes-list) {
     gap: 10px;
     align-items: flex-start;
 }
+.home-info-main-buttons:not(:has(*)) {
+    display: none;
+}
 .home-location {
     max-width: 1400px;
     width: 100%;
