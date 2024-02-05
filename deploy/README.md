@@ -37,6 +37,11 @@ docker push makarovhouse/site:latest
 ### На сервере при обновлении версии.
 Находясь в папке с проектом.
 ```shell
-docker compose run --rm app .venv/bin/python app/manage.py migrate
-docker compose run --rm app .venv/bin/python app/manage.py collectstatic --no-input --clear
+docker compose rm -s -f app && \
+docker compose rmi makarovhouse/site:$VERSION && \
+docker compose up -d app && \
+docker compose exec -it nginx nginx -s reload && \
+docker compose exec -it app .venv/bin/python app/manage.py migrate && \
+docker compose exec -it app .venv/bin/python app/manage.py collectstatic --no-input --clear
 ```
+
