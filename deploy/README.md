@@ -18,6 +18,7 @@
 1) Создать папку project `mkdir project`, в ней описанную выше структуру, и переходим в неё `cd project`
 2) Создать пустую бд `sqlite3 app/db.sqlite3 "VACUUM;"`
 3) Применить миграции к БД<br/>`docker compose run --rm app .venv/bin/python app/manage.py migate`
+4) Создать суперпользователей для админки <br/>`docker compose run --rm app .venv/bin/python app/manage.py createsuperuser`
 5) Собрать статику<br/>`docker compose run --rm app .venv/bin/python app/manage.py collectstatic --no-input`
 6) Закомментировать блок с ssl в /network/nginx/nginx.conf.template
 7) Запустить nginx <br/>`docker compose up -d nginx`
@@ -25,7 +26,6 @@
 9) Разкомментировать блок с ssl в /network/nginx/nginx.conf.template
 10) Пересоздать контейнеры <br/>`docker compose rm -s && docker compose up -d nginx app`
 11) Вызвать `crontab -e` и добавить ежедневное задание на обновление сертификатов <br/>`0 0 * * * cd /home/$USER/project && docker compose run --rm certbot renew`
-12) Создать суперпользователей для админки `docker compose exec -it app .venv/bin/python app/manage.py createsuperuser`
 
 ### Собрать образ и запушить на hub.
 ```shell
@@ -38,5 +38,5 @@ docker push makarovhouse/site:latest
 Находясь в папке с проектом.
 ```shell
 docker compose run --rm app .venv/bin/python app/manage.py migrate
-docker compose run --rm app .venv/bin/python app/manage.py collectstatic --no-input
+docker compose run --rm app .venv/bin/python app/manage.py collectstatic --no-input --clear
 ```

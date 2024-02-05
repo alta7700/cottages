@@ -62,6 +62,15 @@ class Home(models.Model):
     def short_description_parts(self):
         return self.short_description.split('\n')
 
+    @property
+    def carousel_image_names(self):
+        result = []
+        for image in self.carousel.all():
+            image_name = image.name.strip()
+            if image_name not in result:
+                result.append(image_name)
+        return result
+
 
 def carousel_image_path(instance: "HomeCarouselImage", *_):
     return f'home/carousel/{instance.id}.jpeg'

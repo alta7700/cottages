@@ -8,18 +8,6 @@ document.querySelectorAll('.swiper[data-carousel]').forEach(el => {
     const swiper = new Swiper(el, {
         a11y: false,
         lazy: true,
-        pagination: {
-            el: '.carousel-pagination',
-            clickable: true,
-            renderBullet(index, className) {
-                const name = el.querySelectorAll('.swiper-slide').item(index).dataset.name
-                return `<span class="${className}"><span class="text">${name}</span></span>`
-            },
-            modifierClass: 'carousel-pagination-',
-            horizontalClass: 'carousel-pagination-horizontal',
-            bulletClass: 'carousel-bullet button medium light',
-            bulletActiveClass: 'dark',
-        },
         navigation: {
             prevEl: '.carousel-prev',
             nextEl: '.carousel-next',
