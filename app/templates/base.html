@@ -1,7 +1,7 @@
 {% load static homes_extras %}
 
 <!doctype html>
-<html lang="en">
+<html lang="ru" prefix="og: http://ogp.me/ns#">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -9,8 +9,16 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
     <title>{{ title }}</title>
-    <meta name="keywords" content="аренда, снять, коттеджи, краснодар, посуточно">
     <meta name="description" content="{{ seo_description }}">
+    <meta name="keywords" content="{{ seo_keywords }}">
+
+    {% block open_graph %}
+        <meta property="og:type" content="{% if og__type %}{{ og__type }}{% else %}website{% endif %}">
+        {% if og__site_name %}<meta property="og:site_name" content="{{ og__site_name }}">{% endif %}
+        <meta property="og:url" content="{% if og__url %}{{ og__url }}{% else %}{{ request.scheme }}://{{ request.get_host }}{{ request.path }}{% endif %}">
+        <meta property="og:title" content="{% if og__title %}{{ og__title }}{% else %}{{ title }}{% endif %}">
+        <meta property="og:description" content="{% if og__description %}{{ og__description }}{% else %}{{ seo_description }}{% endif %}">
+    {% endblock %}
 
     <meta name="robots" content="index,follow,noodp">
     <meta name="googlebot" content="index,follow">

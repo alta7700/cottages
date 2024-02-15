@@ -1,4 +1,14 @@
 {% extends 'homes/base-detail.html' %}
+
+{% block open_graph %}
+    {{ block.super }}
+    <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{{ initial_home.cover.url }}">
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1280" />
+    <meta property="og:image:height" content="720" />
+    <meta name="twitter:card" content="summary_large_image" />
+{% endblock %}
+
 {% block extra_script %}
     <script>
         window.initialHomeId = '{{ initial_home.id }}';

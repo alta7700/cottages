@@ -37,6 +37,9 @@ server {
         autoindex on;
         alias /www/media/;
     }
+    location /mailru-domain$MAILRU_DOMAIN.html {
+        return 200 'mailru-domain: $MAILRU_DOMAIN';
+    }
 
     location / {
         proxy_pass         http://app:$APP_PORT;

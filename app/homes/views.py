@@ -10,10 +10,23 @@ from .forms import TicketForm
 from .service import HomeService
 
 
+default_seo = {
+    'title': settings.ORGANIZATION_NAME,
+    'seo_description': 'Наши коттеджи - это не просто место для отдыха, '
+                       'а пространство, где роскошь и комфорт становятся '
+                       'вашими верными спутниками. Забронируйте уже сегодня '
+                       'и подарите себе незабываемый опыт в самом центре Краснодара!',
+    'seo_keywords': 'аренда, коттедж, краснодар',
+    'og__site_name': f'{settings.ORGANIZATION_NAME}: Аренда коттеджей в Краснодаре',
+}
+
+
 class BaseHomeDetailsView(TemplateView):
     extra_context = {
-        'title': settings.ORGANIZATION_TOPIC,
-        'topic': settings.ORGANIZATION_TOPIC
+        **default_seo,
+        'title': f'{settings.ORGANIZATION_NAME}: Аренда коттеджей в Краснодаре',
+        'topic': settings.ORGANIZATION_NAME,
+        'og__title': 'Просмотр коттеджей',
     }
     ticket_form = TicketForm()
 
@@ -37,8 +50,13 @@ class HomeDetailsView(BaseHomeDetailsView):
         context = super().get_context_data(**kwargs)
         for home in context['homes']:
             if home.slug == slug:
-                context['initial_home'] = home
-                context['title'] = f'{settings.ORGANIZATION_TOPIC}: {home.name}'
+                context.update({
+                    'initial_home': home,
+                    'title': f'{settings.ORGANIZATION_NAME}: {home.name}',
+                    'seo_description': home.short_description[:170] + '...',
+                    'seo_keywords': f'{context['seo_keywords']}, {home.area}',
+                    'og__title': 'Забронировать: ' + home.name,
+                })
         return context
 
     def get(self, request, *args, **kwargs):
@@ -51,7 +69,9 @@ class HomeDetailsView(BaseHomeDetailsView):
 class AllHomesView(TemplateView):
     template_name = 'homes/all_homes.html'
     extra_context = {
-        'title': settings.ORGANIZATION_TOPIC + ". Все дома",
+        **default_seo,
+        'title': settings.ORGANIZATION_NAME + ": Все коттеджи",
+        'og__title': "Все коттеджи",
     }
 
     def get_context_data(self, **kwargs):
@@ -79,6 +99,11 @@ class CreateTicketView(FormMixin, View):
 
 class ContactsView(TemplateView):
     extra_context = {
+        **default_seo,
+        'title': settings.ORGANIZATION_NAME + ': Контакты',
+        'seo_keywords': default_seo['seo_keywords'] + ', позвонить',
+        'og__title': 'Контакты',
+        'og__description': 'Позвоните или напишите, чтобы узнать больше о наших коттеджах и забронировать.',
         'map': mark_safe(settings.GENERAL_MAP),
         'phones': [{
             'e164': format_number(phone, PhoneNumberFormat.E164),

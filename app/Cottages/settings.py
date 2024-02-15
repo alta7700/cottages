@@ -58,7 +58,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'Cottages.wsgi.application'
-
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 DATABASES = {
     'default': {
@@ -101,6 +101,8 @@ STATIC_URL = '/static/'
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
 
 MEDIA_ROOT = BASE_DIR / 'media'
+HOME_COVERS_FOLDER = 'home/covers'
+HOME_CAROUSEL_IMAGES_FOLDER = 'home/carousel'
 MEDIA_URL = '/media/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
@@ -108,7 +110,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 PHONENUMBER_DEFAULT_REGION = 'RU'
 PHONENUMBER_DEFAULT_FORMAT = 'E164'
 
-ORGANIZATION_TOPIC = os.environ['ORGANIZATION_TOPIC']
 ORGANIZATION_NAME = os.environ['ORGANIZATION_NAME']
 ORGANIZATION_PHONES = [
     phonenumbers.parse(phone, 'RU', True)

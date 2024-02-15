@@ -5,12 +5,12 @@ from django.conf import settings
 from django.core.validators import MinLengthValidator
 from phonenumber_field.modelfields import PhoneNumberField
 
-
+from .model_fields import ProgressiveJpegField
 from .validators import validate_16x9_jpeg
 
 
 def home_cover_path(*_):
-    return f'home/covers/{uuid.uuid4()}.jpeg'
+    return f'{settings.HOME_COVERS_FOLDER}/{uuid.uuid4()}.jpeg'
 
 
 class Home(models.Model):
@@ -20,7 +20,7 @@ class Home(models.Model):
     slug = models.SlugField(max_length=100, verbose_name='Идентификатор')
     address = models.CharField(max_length=200, verbose_name='Адрес')
     position = models.PositiveIntegerField(null=True, blank=True, verbose_name='Позиция в списке')
-    cover = models.ImageField(
+    cover = ProgressiveJpegField(
         upload_to=home_cover_path, validators=[validate_16x9_jpeg], help_text='Только JPEG 16x9',
         verbose_name='Обложка'
     )
@@ -28,6 +28,7 @@ class Home(models.Model):
     show_on_site = models.BooleanField(default=False, verbose_name='Показывать на сайте')
 
     short_description = models.TextField(blank=True, default='', verbose_name='Краткое описание')
+    area = models.CharField(max_length=25, blank=True, default='', verbose_name='Микрорайон')
 
     ya_map = models.TextField(blank=True, default='', verbose_name='Код яндекс карт')
     video = models.TextField(blank=True, default='', verbose_name='Ссылка видео Youtube')
@@ -72,8 +73,8 @@ class Home(models.Model):
         return result
 
 
-def carousel_image_path(instance: "HomeCarouselImage", *_):
-    return f'home/carousel/{instance.id}.jpeg'
+def carousel_image_path(*_):
+    return f'{settings.HOME_CAROUSEL_IMAGES_FOLDER}/{uuid.uuid4()}.jpeg'
 
 
 class HomeCarouselImage(models.Model):
@@ -81,7 +82,7 @@ class HomeCarouselImage(models.Model):
     home = models.ForeignKey(Home, on_delete=models.CASCADE, related_name='carousel')
     position = models.PositiveIntegerField(verbose_name='Позиция в карусели')
     name = models.CharField(max_length=30, validators=[MinLengthValidator(1)], blank=False, verbose_name='Название')
-    image = models.ImageField(
+    image = ProgressiveJpegField(
         upload_to=carousel_image_path, validators=[validate_16x9_jpeg], help_text='Только JPEG 16x9',
         verbose_name='Фото'
     )
