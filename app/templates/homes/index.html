@@ -1,1 +1,11 @@
 {% extends 'homes/base-detail.html' %}
+{% load schema_org %}
+
+{% block extra_head %}
+    <meta name="yandex-verification" content="{{ yandex_verification }}" />
+{% endblock %}
+
+{% block schema_org %}
+    {{ block.super }}
+    {{ ""|so_organization }}
+{% endblock %}

@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load static %}
+{% load static schema_org %}
 
 {% block content %}
     <div class="homes-list">
@@ -24,4 +24,9 @@
     {{ block.super }}
     <script src="{% static 'js/form.js' %}"></script>
     <script src="{% static 'js/all_homes.js' %}"></script>
+{% endblock %}
+
+{% block schema_org %}
+    {{ block.super }}
+    {{ homes|so_homes_catalog }}
 {% endblock %}

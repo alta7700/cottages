@@ -1,4 +1,4 @@
-{% load static homes_extras %}
+{% load static homes_extras schema_org %}
 
 <!doctype html>
 <html lang="ru" prefix="og: http://ogp.me/ns#">
@@ -52,7 +52,7 @@
             opacity: 0;
         }
     </style>
-
+    {% block extra_head %}{% endblock %}
 </head>
 <body>
     {% site_header request %}
@@ -64,5 +64,9 @@
     {% block lib_scripts %}{% endblock %}
     <script src="{% static 'js/main.js' %}"></script>
     {% block extra_script %}{% endblock %}
+
+    {% block schema_org %}
+        {% if breadcrumbs_items %}{{ breadcrumbs_items|so_breadcrumbs }}{% endif %}
+    {% endblock %}
 </body>
 </html>

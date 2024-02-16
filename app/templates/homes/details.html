@@ -1,4 +1,5 @@
 {% extends 'homes/base-detail.html' %}
+{% load schema_org %}
 
 {% block open_graph %}
     {{ block.super }}
@@ -17,4 +18,9 @@
     <script>
         document.querySelector('.home-details').scrollIntoView({ behavior: "smooth" });
     </script>
+{% endblock %}
+
+{% block schema_org %}
+    {{ block.super }}
+    {{ initial_home|so_home }}
 {% endblock %}

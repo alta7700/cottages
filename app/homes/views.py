@@ -1,6 +1,6 @@
 from django.views.generic import TemplateView, View
 from django.views.generic.edit import FormMixin
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.http.response import HttpResponse, JsonResponse, HttpResponseRedirect
 from django.utils.safestring import mark_safe
 from django.conf import settings
@@ -19,6 +19,7 @@ default_seo = {
     'seo_keywords': 'аренда, коттедж, краснодар',
     'og__site_name': f'{settings.ORGANIZATION_NAME}: Аренда коттеджей в Краснодаре',
 }
+homes_url = reverse_lazy('homes')
 
 
 class BaseHomeDetailsView(TemplateView):
@@ -27,6 +28,7 @@ class BaseHomeDetailsView(TemplateView):
         'title': f'{settings.ORGANIZATION_NAME}: Аренда коттеджей в Краснодаре',
         'topic': settings.ORGANIZATION_NAME,
         'og__title': 'Просмотр коттеджей',
+        'yandex_verification': settings.YANDEX_VERIFICATION,
     }
     ticket_form = TicketForm()
 
@@ -56,6 +58,10 @@ class HomeDetailsView(BaseHomeDetailsView):
                     'seo_description': home.short_description[:170] + '...',
                     'seo_keywords': f'{context['seo_keywords']}, {home.area}',
                     'og__title': 'Забронировать: ' + home.name,
+                    'breadcrumbs_items': {
+                        "Коттеджи": homes_url,
+                        home.name: reverse('detail', args=[home.slug])
+                    }
                 })
         return context
 
@@ -72,6 +78,7 @@ class AllHomesView(TemplateView):
         **default_seo,
         'title': settings.ORGANIZATION_NAME + ": Все коттеджи",
         'og__title': "Все коттеджи",
+        'breadcrumbs_items': {"Коттеджи": homes_url}
     }
 
     def get_context_data(self, **kwargs):
@@ -111,5 +118,6 @@ class ContactsView(TemplateView):
         } for phone in settings.ORGANIZATION_PHONES],
         'instagram': settings.ORGANIZATION_INSTAGRAM,
         'mails': settings.ORGANIZATION_MAILS,
+        'breadcrumbs_items': {"Контакты": reverse_lazy('contacts')}
     }
     template_name = 'contacts.html'
